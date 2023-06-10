@@ -1103,6 +1103,7 @@ GameObject:
   - component: {fileID: 1117473145}
   - component: {fileID: 1117473147}
   - component: {fileID: 1117473148}
+  - component: {fileID: 1117473149}
   m_Layer: 0
   m_Name: StartManager
   m_TagString: Untagged
@@ -1178,6 +1179,22 @@ MonoBehaviour:
   _mainMenuButton: {fileID: 1647302507}
   _restartButton: {fileID: 1647302507}
   _quitButton: {fileID: 1647302507}
+--- !u!114 &1117473149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1117473144}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f4e69f6e147c742b3bdd59ff8c24da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _failPanel: {fileID: 0}
+  _gameboard: {fileID: 0}
+  _mainMenuButton: {fileID: 0}
+  _restartButton: {fileID: 0}
 --- !u!1 &1120252347
 GameObject:
   m_ObjectHideFlags: 0
