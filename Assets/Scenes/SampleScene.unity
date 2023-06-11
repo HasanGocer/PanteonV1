@@ -20017,7 +20017,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameStat: 0
   level: 1
-  money: 1000
+  money: 300
   power: 100
   sound: 1
 --- !u!114 &3463060653407704337
@@ -20150,6 +20150,15 @@ MonoBehaviour:
   - objectPrefab: {fileID: 8749465761293422312, guid: 0f2ef4f1a4a62e443a0a0b7f79c2943a, type: 3}
     objectParent: {fileID: 0}
     poolSize: 100
+  - objectPrefab: {fileID: 6331275906715107345, guid: 690951f4781b19649bc5c7892414ff37, type: 3}
+    objectParent: {fileID: 0}
+    poolSize: 100
+  - objectPrefab: {fileID: 8919484260529707532, guid: 2c27f6103c8348844a3cc636de15052a, type: 3}
+    objectParent: {fileID: 0}
+    poolSize: 100
+  - objectPrefab: {fileID: 193062, guid: 01949c12a89de284792dc4b7b7128404, type: 3}
+    objectParent: {fileID: 0}
+    poolSize: 100
 --- !u!114 &3463060653407704349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20234,8 +20243,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _OPMoneyParticalCount: 10
   _OPBuildParticalCount: 11
-  _OPMoneyParticalTimeCount: 1
-  _OPBuildParticalTimeCount: 1
+  _OPHealthParticalCount: 13
+  _OPBuildRestoredParticalCount: 14
+  _OPBloodParticalCount: 15
+  _MoneyParticalTimeCount: 1
+  _BuildParticalTimeCount: 1
+  _HealthParticalTimeCount: 1
+  _BuildRestoredParticalTimeCount: 1
+  _BloodParticalTimeCount: 1
 --- !u!114 &3463060653579789419
 MonoBehaviour:
   m_ObjectHideFlags: 0

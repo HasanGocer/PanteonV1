@@ -37,6 +37,7 @@ public class RepairmanID : MonoBehaviour
     public void RepairHP()
     {
         inGameSelectedSystem.SetHealth(_repairmanData.HP);
+        ParticalManager.Instance.CallBuildRestoredPartical(gameObject);
         SelectSystem.Instance.SelectFree();
     }
 

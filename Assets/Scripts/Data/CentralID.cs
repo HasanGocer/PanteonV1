@@ -44,6 +44,7 @@ public class CentralID : MonoBehaviour
     public void RepairHP()
     {
         inGameSelectedSystem.SetHealth(_centralData.HP[inGameSelectedSystem.GetLevel() - 1]);
+        ParticalManager.Instance.CallBuildRestoredPartical(gameObject);
         SelectSystem.Instance.SelectFree();
     }
 

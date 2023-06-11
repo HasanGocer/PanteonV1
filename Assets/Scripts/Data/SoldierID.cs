@@ -36,6 +36,8 @@ public class SoldierID : MonoBehaviour
 
     public void SetSoldierAnim(SoldierMoveSystem.SoldierAnimType soldierAnimType)
     {
+        _soldierAnimType = soldierAnimType;
+
         if (soldierAnimType == SoldierMoveSystem.SoldierAnimType.run)
             _soldierAnims[_level - 1].PlayRunAnim();
         else if (soldierAnimType == SoldierMoveSystem.SoldierAnimType.idle)
@@ -44,8 +46,6 @@ public class SoldierID : MonoBehaviour
             _soldierAnims[_level - 1].PlayAttackAnim();
         else if (soldierAnimType == SoldierMoveSystem.SoldierAnimType.dead)
             _soldierAnims[_level - 1].PlayDeadAnim();
-
-        _soldierAnimType = soldierAnimType;
     }
 
     public void FollowRival(GameObject rival)
@@ -63,6 +63,7 @@ public class SoldierID : MonoBehaviour
     public void SoldierHeal()
     {
         _currentHP = _SoldierData.maxHPs[_level - 1];
+        ParticalManager.Instance.CallHealthPartical(gameObject);
     }
 
     private void Update()

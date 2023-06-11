@@ -6,13 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class StartButtons : MonoBehaviour
 {
-    [SerializeField] Button _startButton, _continueButton, _quitButton;
+    [SerializeField] Button _startButton, _continueButton, _quitButton, _infoButton, _infoBackButton;
+    [SerializeField] GameObject _infoPanel;
 
     void Start()
     {
         _startButton.onClick.AddListener(StartButton);
         _continueButton.onClick.AddListener(ContinueButton);
         _quitButton.onClick.AddListener(QuitButton);
+        _infoButton.onClick.AddListener(InfoButton);
+        _infoBackButton.onClick.AddListener(InfoBackButton);
     }
 
     private void StartButton()
@@ -32,6 +35,14 @@ public class StartButtons : MonoBehaviour
                 SceneManager.LoadScene(1);
             }
         }
+    }
+    private void InfoButton()
+    {
+        _infoPanel.SetActive(true);
+    }
+    private void InfoBackButton()
+    {
+        _infoPanel.SetActive(false);
     }
     private void QuitButton()
     {

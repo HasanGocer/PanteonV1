@@ -38,6 +38,7 @@ public class HospitalID : MonoBehaviour
     public void RepairHP()
     {
         inGameSelectedSystem.SetHealth(_hospitalData.HP);
+        ParticalManager.Instance.CallBuildRestoredPartical(gameObject);
         SelectSystem.Instance.SelectFree();
     }
 

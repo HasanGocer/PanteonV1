@@ -45,6 +45,7 @@ public class BarracksID : MonoBehaviour
     public void RepairHP()
     {
         inGameSelectedSystem.SetHealth(_barracksData.HPs[inGameSelectedSystem.GetLevel() - 1]);
+        ParticalManager.Instance.CallBuildRestoredPartical(gameObject);
         SelectSystem.Instance.SelectFree();
     }
     public void CostTextPlacement(TMP_Text upgradeCostText)

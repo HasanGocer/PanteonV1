@@ -39,6 +39,7 @@ public class MotherBaseID : MonoBehaviour
     public void RepairHP()
     {
         inGameSelectedSystem.SetHealth(_motherBaseData.HP);
+        ParticalManager.Instance.CallBuildRestoredPartical(gameObject);
         SelectSystem.Instance.SelectFree();
     }
 

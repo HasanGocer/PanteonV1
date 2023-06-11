@@ -43,6 +43,7 @@ public class MinerID : MonoBehaviour
     public void RepairHP()
     {
         inGameSelectedSystem.SetHealth(_minerData.HP[inGameSelectedSystem.GetLevel() - 1]);
+        ParticalManager.Instance.CallBuildRestoredPartical(gameObject);
         SelectSystem.Instance.SelectFree();
     }
 

@@ -42,6 +42,7 @@ public class RivalID : MonoBehaviour
     public void DownHP(int HP)
     {
         _currentHP -= HP;
+        ParticalManager.Instance.CallBloodPartical(gameObject);
         CheckHealth();
     }
 
