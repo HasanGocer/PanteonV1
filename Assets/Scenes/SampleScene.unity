@@ -19904,6 +19904,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _settingPanel: {fileID: 1707035983}
+  _gameBoard: {fileID: 373770542}
   _settingButton: {fileID: 2067615367}
   _settingBackButton: {fileID: 660321135}
   _mainMenuButton: {fileID: 413187859}
@@ -20016,7 +20017,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameStat: 0
   level: 1
-  money: 200
+  money: 1000
   power: 100
   sound: 1
 --- !u!114 &3463060653407704337
@@ -20321,8 +20322,10 @@ MonoBehaviour:
     buildID: []
     builds: []
     buildLevel: 
+    buildHP: 
     buildTypes: 
     soldierCount: 000000000000000000000000
+    isFinish: 0
   _gridParentGameObject: {fileID: 1333993553}
   _baseColor: {r: 0.5139181, g: 0.26666665, b: 0.99215686, a: 1}
   _offsetColor: {r: 0.46407834, g: 0.29019612, b: 0.7647059, a: 1}

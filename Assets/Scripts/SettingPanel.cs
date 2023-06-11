@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class SettingPanel : MonoBehaviour
 {
     [SerializeField] GameObject _settingPanel;
+    [SerializeField] GameObject _gameBoard;
     [SerializeField] Button _settingButton, _settingBackButton, _mainMenuButton, _restartButton, _quitButton;
 
     private void Start()
@@ -21,13 +22,17 @@ public class SettingPanel : MonoBehaviour
     {
         if (_settingPanel.activeInHierarchy)
         {
+            Time.timeScale = 1;
             SoundSystem.Instance.EffectMusicPlacement();
             _settingPanel.SetActive(false);
+            _gameBoard.SetActive(true);
         }
         else
         {
             SoundSystem.Instance.SetEffectMusicBar(SoundSystem.Instance.GetEffect());
+            Time.timeScale = 0;
             _settingPanel.SetActive(true);
+            _gameBoard.SetActive(false);
         }
     }
     private void QuitButton()

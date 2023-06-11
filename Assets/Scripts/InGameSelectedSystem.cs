@@ -50,12 +50,13 @@ public class InGameSelectedSystem : MonoBehaviour
     {
         InfoPanel infoPanel = InfoPanel.Instance;
 
-        BuildManager.Instance.AddMainBuildTouch(GetComponent<MainBuildTouch>());
-
         if (SelectSystem.Instance.GetSelectEnumStat() == SelectSystem.SelectEnumStat.Repair)
             RepairTime();
         else if (infoPanel.BuyInfoPanelStatIsFull())
-            infoPanel.OnShowInfoPanel(gameObject,mainBuildStat);
+        {
+            BuildManager.Instance.AddMainBuildTouch(GetComponent<MainBuildTouch>());
+            infoPanel.OnShowInfoPanel(gameObject, mainBuildStat);
+        }
     }
     private void RepairTime()
     {

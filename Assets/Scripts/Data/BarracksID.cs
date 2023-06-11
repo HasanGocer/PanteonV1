@@ -22,22 +22,30 @@ public class BarracksID : MonoBehaviour
 
     bool isCrash;
 
-    public void StartDataPlacement(int level)
+    public void StartDataPlacement(bool isNew, int level)
     {
+        if (isNew)
+        {
+            GridSystem.Instance.mainGrid.buildHP.Add(_barracksData.HPs[0]);
+            inGameSelectedSystem.SetHealth(_barracksData.HPs[0]);
+        }
+        else
+            inGameSelectedSystem.SetHealth(GridSystem.Instance.mainGrid.buildHP[GridSystem.Instance.mainGrid.builds.Count - 1]); ;
+
         _upgrades[level - 1].SetActive(true);
-        inGameSelectedSystem.SetHealth(_barracksData.HPs[0]);
         _hitTime.SetData(_barracksData.countDowns[inGameSelectedSystem.GetLevel() - 1], _barracksData.hitSpeeds[inGameSelectedSystem.GetLevel() - 1], _barracksData.damages[inGameSelectedSystem.GetLevel() - 1], gameObject);
     }
 
     public void HPDown(int downCount)
     {
         inGameSelectedSystem.SetHealth(inGameSelectedSystem.GetHealth() - downCount);
+        SaveHP();
     }
 
     public void RepairHP()
     {
-        SelectSystem.Instance.SelectFree();
         inGameSelectedSystem.SetHealth(_barracksData.HPs[inGameSelectedSystem.GetLevel() - 1]);
+        SelectSystem.Instance.SelectFree();
     }
     public void CostTextPlacement(TMP_Text upgradeCostText)
     {
@@ -86,6 +94,7 @@ public class BarracksID : MonoBehaviour
         _hitTime.HitTimeOff();
         SetBar();
         BuildManager.Instance.DeleteBuild(gameObject);
+        GameManager.Instance.GridPlacementWrite(GridSystem.Instance.mainGrid);
         gameObject.SetActive(false);
     }
     private void SetBar()
@@ -119,5 +128,15 @@ public class BarracksID : MonoBehaviour
     private void BuildVisibility(int level, bool isOpen)
     {
         _upgrades[level].SetActive(isOpen);
+    }
+    private void SaveHP()
+    {
+        GridSystem gridSystem = GridSystem.Instance;
+
+        for (int i = 0; i < gridSystem.mainGrid.builds.Count; i++)
+            if (gridSystem.mainGrid.builds[i] == gameObject)
+            {
+                gridSystem.mainGrid.buildHP[i] = inGameSelectedSystem.GetHealth();
+            }
     }
 }

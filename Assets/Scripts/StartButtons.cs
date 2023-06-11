@@ -24,12 +24,24 @@ public class StartButtons : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("first"))
         {
-            Load.Instance.isReturn = true;
-            SceneManager.LoadScene(1);
+            GridSystem.VerticalGrid tempGrid = GridPlacementRead();
+
+            if (!tempGrid.isFinish)
+            {
+                Load.Instance.isReturn = true;
+                SceneManager.LoadScene(1);
+            }
         }
     }
     private void QuitButton()
     {
         Application.Quit();
+    }
+    private GridSystem.VerticalGrid GridPlacementRead()
+    {
+        string jsonRead = System.IO.File.ReadAllText(Application.persistentDataPath + "/GridData.json");
+        GridSystem.VerticalGrid grid = new GridSystem.VerticalGrid();
+        grid = JsonUtility.FromJson<GridSystem.VerticalGrid>(jsonRead);
+        return grid;
     }
 }

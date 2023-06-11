@@ -20,23 +20,30 @@ public class ArcherID : MonoBehaviour
     [SerializeField] Image _barImage;
     bool isCrash;
 
-    public void StartDataPlacement(int level)
+    public void StartDataPlacement(bool isNew, int level)
     {
+        if (isNew)
+        {
+            GridSystem.Instance.mainGrid.buildHP.Add(_archerData.HPs[0]);
+            inGameSelectedSystem.SetHealth(_archerData.HPs[0]);
+        }
+        else
+            inGameSelectedSystem.SetHealth(GridSystem.Instance.mainGrid.buildHP[GridSystem.Instance.mainGrid.builds.Count - 1]); ;
+
         _upgrades[level - 1].SetActive(true);
-        inGameSelectedSystem.SetHealth(_archerData.HPs[0]);
         _hitTime.SetData(_archerData.countDowns[inGameSelectedSystem.GetLevel() - 1], _archerData.hitSpeeds[inGameSelectedSystem.GetLevel() - 1], _archerData.damages[inGameSelectedSystem.GetLevel() - 1], gameObject);
     }
 
     public void HPDown(int downCount)
     {
         inGameSelectedSystem.SetHealth(inGameSelectedSystem.GetHealth() - downCount);
+        SaveHP();
     }
 
     public void RepairHP()
     {
-        SelectSystem.Instance.SelectFree();
-
         inGameSelectedSystem.SetHealth(_archerData.HPs[inGameSelectedSystem.GetLevel() - 1]);
+        SelectSystem.Instance.SelectFree();
     }
 
     public void UpgradeTime(TMP_Text upgradeCostText)
@@ -79,6 +86,7 @@ public class ArcherID : MonoBehaviour
         _hitTime.HitTimeOff();
         SetBar();
         BuildManager.Instance.DeleteBuild(gameObject);
+        GameManager.Instance.GridPlacementWrite(GridSystem.Instance.mainGrid);
         gameObject.SetActive(false);
     }
     private void SetBar()
@@ -112,5 +120,14 @@ public class ArcherID : MonoBehaviour
     {
         _upgrades[level].SetActive(isOpen);
     }
+    private void SaveHP()
+    {
+        GridSystem gridSystem = GridSystem.Instance;
 
+        for (int i = 0; i < gridSystem.mainGrid.builds.Count; i++)
+            if (gridSystem.mainGrid.builds[i] == gameObject)
+            {
+                gridSystem.mainGrid.buildHP[i] = inGameSelectedSystem.GetHealth();
+            }
+    }
 }

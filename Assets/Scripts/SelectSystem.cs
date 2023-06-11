@@ -56,8 +56,6 @@ public class SelectSystem : MonoSingleton<SelectSystem>
         if (Input.GetMouseButton(0))
             if (_selectEnumStat == SelectEnumStat.BuildPlacement)
             {
-                _selectEnumStat = SelectEnumStat.free;
-
                 BuildManager.Instance.BuildPlacement();
             }
     }

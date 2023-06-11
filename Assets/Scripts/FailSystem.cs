@@ -26,10 +26,13 @@ public class FailSystem : MonoSingleton<FailSystem>
     }
     public void MainMenuButton()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }
     public void RestartButton()
     {
+        Time.timeScale = 1;
+        PlayerPrefs.DeleteAll();
         Load.Instance.isReturn = false;
         SceneManager.LoadScene(1);
     }

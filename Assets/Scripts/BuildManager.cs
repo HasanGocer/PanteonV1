@@ -31,7 +31,8 @@ public class BuildManager : MonoSingleton<BuildManager>
     {
         if (_mainBuildTouch.isReady && _mainBuildTouch.CheckGrid())
         {
-            DataPlacement(1, _mainBuildTouch.GetComponent<InGameSelectedSystem>().mainBuildStat);
+            SelectSystem.Instance.SelectFree();
+            DataPlacement(true, 1, _mainBuildTouch.GetComponent<InGameSelectedSystem>().mainBuildStat);
             SoundSystem.Instance.CallBuildPlacement();
             ParticalManager.Instance.CallBuildPartical(_mainBuildTouch.gameObject);
             StartCoroutine(_mainBuildTouch.mainBuildTouch.BuildPlacement());
@@ -56,15 +57,15 @@ public class BuildManager : MonoSingleton<BuildManager>
             }
     }
 
-    public void DataPlacement(int level, InfoPanel.InfoPanelStat ýnfoPanelStat)
+    public void DataPlacement(bool isNew, int level, InfoPanel.InfoPanelStat ýnfoPanelStat)
     {
-        if (ýnfoPanelStat == InfoPanel.InfoPanelStat.motherbase) _mainBuildTouch.gameObject.GetComponent<MotherBaseID>().StartDataPlacement();
-        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.repairman) _mainBuildTouch.gameObject.GetComponent<RepairmanID>().StartDataPlacement();
-        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.miner) _mainBuildTouch.gameObject.GetComponent<MinerID>().StartDataPlacement(level);
-        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.hospital) _mainBuildTouch.gameObject.GetComponent<HospitalID>().StartDataPlacement();
-        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.central) _mainBuildTouch.gameObject.GetComponent<CentralID>().StartDataPlacement(level);
-        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.barracks) _mainBuildTouch.gameObject.GetComponent<BarracksID>().StartDataPlacement(level);
-        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.archer) _mainBuildTouch.gameObject.GetComponent<ArcherID>().StartDataPlacement(level);
+        if (ýnfoPanelStat == InfoPanel.InfoPanelStat.motherbase) _mainBuildTouch.gameObject.GetComponent<MotherBaseID>().StartDataPlacement(isNew);
+        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.repairman) _mainBuildTouch.gameObject.GetComponent<RepairmanID>().StartDataPlacement(isNew);
+        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.miner) _mainBuildTouch.gameObject.GetComponent<MinerID>().StartDataPlacement(isNew, level);
+        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.hospital) _mainBuildTouch.gameObject.GetComponent<HospitalID>().StartDataPlacement(isNew);
+        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.central) _mainBuildTouch.gameObject.GetComponent<CentralID>().StartDataPlacement(isNew, level);
+        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.barracks) _mainBuildTouch.gameObject.GetComponent<BarracksID>().StartDataPlacement(isNew, level);
+        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.archer) _mainBuildTouch.gameObject.GetComponent<ArcherID>().StartDataPlacement(isNew, level);
     }
 
     public void AddMainBuildTouch(MainBuildTouch mainBuildTouch)

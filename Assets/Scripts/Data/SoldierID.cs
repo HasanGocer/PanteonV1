@@ -133,6 +133,7 @@ public class SoldierID : MonoBehaviour
             SoliderSpawnSystem.Instance.DeleteSoldier(_level);
             SetSoldierAnim(SoldierMoveSystem.SoldierAnimType.dead);
             _soldierAnimType = SoldierMoveSystem.SoldierAnimType.idle;
+            GameManager.Instance.GridPlacementWrite(GridSystem.Instance.mainGrid);
             gameObject.SetActive(false);
         }
     }

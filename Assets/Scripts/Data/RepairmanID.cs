@@ -17,20 +17,27 @@ public class RepairmanID : MonoBehaviour
     [SerializeField] Image _barImage;
     bool isCrash;
 
-    public void StartDataPlacement()
+    public void StartDataPlacement(bool isNew)
     {
-        inGameSelectedSystem.SetHealth(_repairmanData.HP);
+        if (isNew)
+        {
+            GridSystem.Instance.mainGrid.buildHP.Add(_repairmanData.HP);
+            inGameSelectedSystem.SetHealth(_repairmanData.HP);
+        }
+        else
+            inGameSelectedSystem.SetHealth(GridSystem.Instance.mainGrid.buildHP[GridSystem.Instance.mainGrid.builds.Count - 1]); ;
     }
 
     public void HPDown(int downCount)
     {
         inGameSelectedSystem.SetHealth(inGameSelectedSystem.GetHealth() - downCount);
+        SaveHP();
     }
 
     public void RepairHP()
     {
-        SelectSystem.Instance.SelectFree();
         inGameSelectedSystem.SetHealth(_repairmanData.HP);
+        SelectSystem.Instance.SelectFree();
     }
 
     public void Update()
@@ -47,6 +54,7 @@ public class RepairmanID : MonoBehaviour
         ParticalManager.Instance.CallBuildPartical(gameObject);
         SetBar();
         BuildManager.Instance.DeleteBuild(gameObject);
+        GameManager.Instance.GridPlacementWrite(GridSystem.Instance.mainGrid);
         gameObject.SetActive(false);
     }
     private void SetBar()
@@ -61,5 +69,15 @@ public class RepairmanID : MonoBehaviour
     private void BarUpdate(float rateHP)
     {
         _barImage.fillAmount = Mathf.Lerp(_barImage.fillAmount, rateHP, Time.deltaTime);
+    }
+    private void SaveHP()
+    {
+        GridSystem gridSystem = GridSystem.Instance;
+
+        for (int i = 0; i < gridSystem.mainGrid.builds.Count; i++)
+            if (gridSystem.mainGrid.builds[i] == gameObject)
+            {
+                gridSystem.mainGrid.buildHP[i] = inGameSelectedSystem.GetHealth();
+            }
     }
 }

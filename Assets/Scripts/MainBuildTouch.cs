@@ -58,17 +58,22 @@ public class MainBuildTouch : MonoBehaviour
 
     private void GridChecked()
     {
+        GridSystem gridSystem = GridSystem.Instance;
+
         foreach (BuildTouch buildTouch in _buildTouches)
         {
-            GridSystem.Instance.mainGrid.horizontalGrids[buildTouch.verticalCount].gridBool[buildTouch.horizontalCount] = true;
-            GridSystem.Instance.mainGrid.horizontalGrids[buildTouch.verticalCount].gridGameObject[buildTouch.horizontalCount] = gameObject;
+            gridSystem.mainGrid.horizontalGrids[buildTouch.verticalCount].gridBool[buildTouch.horizontalCount] = true;
+            gridSystem.mainGrid.horizontalGrids[buildTouch.verticalCount].gridGameObject[buildTouch.horizontalCount] = gameObject;
         }
     }
     private void GridSave()
     {
-        GridSystem.Instance.mainGrid.buildTypes.Add(GetComponent<InGameSelectedSystem>().mainBuildStat);
-        GridSystem.Instance.mainGrid.builds.Add(gameObject);
-        GridSystem.Instance.mainGrid.buildLevel.Add(1);
+        GridSystem gridSystem = GridSystem.Instance;
+
+        gridSystem.mainGrid.buildTypes.Add(GetComponent<InGameSelectedSystem>().mainBuildStat);
+        gridSystem.mainGrid.builds.Add(gameObject);
+        gridSystem.mainGrid.buildLevel.Add(1);
+
 
         GridSystem.BuildID buildID = new GridSystem.BuildID();
 

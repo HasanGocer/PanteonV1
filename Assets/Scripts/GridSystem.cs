@@ -23,8 +23,10 @@ public class GridSystem : MonoSingleton<GridSystem>
         public List<BuildID> buildID = new List<BuildID>();
         public List<GameObject> builds = new List<GameObject>();
         public List<int> buildLevel = new List<int>();
+        public List<int> buildHP = new List<int>();
         public List<InfoPanel.InfoPanelStat> buildTypes = new List<InfoPanel.InfoPanelStat>();
         public List<int> soldierCount = new List<int>();
+        public bool isFinish;
     }
 
     public VerticalGrid mainGrid = new VerticalGrid();
@@ -146,7 +148,7 @@ public class GridSystem : MonoSingleton<GridSystem>
         buildTouch.OverrideSelectObject(mainGrid.horizontalGrids[buildID.buildIntVertical].gridGameObject[buildID.buildIntHorizontal]);
         StartCoroutine(buildTouch.BuildPlacement());
         mainBuildTouch.GetComponent<InGameSelectedSystem>().BuildPlacement();
-        BuildManager.Instance.DataPlacement(level, build.GetComponent<InGameSelectedSystem>().mainBuildStat);
+        BuildManager.Instance.DataPlacement(false, level, build.GetComponent<InGameSelectedSystem>().mainBuildStat);
         mainBuildTouch.DrawGreen();
         BuildManager.Instance.ClearMainBuildTouch();
     }

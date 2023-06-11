@@ -12,7 +12,7 @@ public class BuildTouch : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Grid") )
+        if (other.CompareTag("Grid"))
         {
             GridID gridID = other.GetComponent<GridID>();
             GridSystem gridSystem = GridSystem.Instance;
@@ -20,6 +20,14 @@ public class BuildTouch : MonoBehaviour
             SelectObjectPlacement(other.gameObject);
             GridIDPlacement(gridID);
             SelectFreedom(gridID, gridSystem);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Grid"))
+        {
+            isFree = false;
+            _selectObject = null;
         }
     }
 
