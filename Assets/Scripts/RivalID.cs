@@ -17,33 +17,27 @@ public class RivalID : MonoBehaviour
 
     GameObject _focusBuild;
     GameObject _focusSoldier;
-    bool _isTouchSoldier;
-    bool _isTouchBuild;
-    bool _isDead;
+
+    [SerializeField] RivalSpawnSystem.RivalStat _rivalStat;
 
     public void RivalIDStart(int level)
     {
         _level = level;
         _currentHP = _rivalData.maxHPs[_level - 1];
         SetVisibility();
-        _focusBuild = SelectBuild();
+        _focusBuild = FindNearestBuilding();
         _rivalMove.SetTarget(_focusBuild);
     }
-    public bool IsWayFree()
-    {
-        if (_isTouchBuild || _isTouchSoldier) return false;
-        else return true;
-    }
 
-    public int GetCurrentHP()
+    public int GetRivalHealth()
     {
         return _currentHP;
     }
-    public void DownHP(int HP)
+    public void DecreaseRivalHealth(int HP)
     {
         _currentHP -= HP;
         ParticalManager.Instance.CallBloodPartical(gameObject);
-        CheckHealth();
+        CheckIfAlive();
     }
 
     public void SetSoldierAnim(SoldierMoveSystem.SoldierAnimType rivalAnimType)
@@ -67,16 +61,16 @@ public class RivalID : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!_isTouchSoldier && collision.gameObject.CompareTag("Soldier"))
+        if (_rivalStat != RivalSpawnSystem.RivalStat.focusSoldier && collision.gameObject.CompareTag("Soldier"))
         {
-            _isTouchSoldier = true;
+            _rivalStat = RivalSpawnSystem.RivalStat.focusSoldier;
             _focusSoldier = collision.gameObject;
             _rivalMove.NavmeshStoped();
             StartCoroutine(FightSoldier());
         }
-        else if (!_isTouchBuild && !_isTouchSoldier && collision.gameObject.CompareTag("Build"))
+        else if (_rivalStat != RivalSpawnSystem.RivalStat.focusBuild && _rivalStat != RivalSpawnSystem.RivalStat.focusSoldier && collision.gameObject.CompareTag("Build"))
         {
-            _isTouchBuild = true;
+            _rivalStat = RivalSpawnSystem.RivalStat.focusBuild;
             _focusBuild = collision.gameObject;
             _rivalMove.NavmeshStoped();
             StartCoroutine(FightBuild());
@@ -84,15 +78,15 @@ public class RivalID : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!_isDead && collision.gameObject.CompareTag("Soldier"))
+        if (_rivalStat != RivalSpawnSystem.RivalStat.dead && collision.gameObject.CompareTag("Soldier"))
         {
-            _isTouchSoldier = false;
+            _rivalStat = RivalSpawnSystem.RivalStat.free;
             _focusSoldier = null;
             _rivalMove.NavmeshResume();
         }
-        if (!_isDead && collision.gameObject.CompareTag("Build"))
+        if (_rivalStat != RivalSpawnSystem.RivalStat.dead && collision.gameObject.CompareTag("Build"))
         {
-            _isTouchBuild = false;
+            _rivalStat = RivalSpawnSystem.RivalStat.free;
             _focusBuild = null;
             _rivalMove.NavmeshResume();
         }
@@ -106,7 +100,7 @@ public class RivalID : MonoBehaviour
     {
         SoldierID soldierID = _focusSoldier.GetComponent<SoldierID>();
 
-        while (soldierID.GetCurrentHP() > 0 && GetCurrentHP() > 0)
+        while (soldierID.GetCurrentHP() > 0 && GetRivalHealth() > 0)
         {
             HitSoldier(soldierID);
 
@@ -115,17 +109,17 @@ public class RivalID : MonoBehaviour
             SetSoldierAnim(SoldierMoveSystem.SoldierAnimType.idle);
         }
 
-        if (GetCurrentHP() > 0)
+        if (GetRivalHealth() > 0)
             _rivalMove.NavmeshResume();
 
-        _isTouchSoldier = false;
+        _rivalStat = RivalSpawnSystem.RivalStat.focusSoldier;
     }
 
     private IEnumerator FightBuild()
     {
         InGameSelectedSystem inGameSelectedSystem = _focusBuild.GetComponent<InGameSelectedSystem>();
 
-        while (!_isTouchSoldier && inGameSelectedSystem.GetHealth() > 0 && GetCurrentHP() > 0)
+        while (_rivalStat != RivalSpawnSystem.RivalStat.focusSoldier && inGameSelectedSystem.GetHealth() > 0 && GetRivalHealth() > 0)
         {
             HitBuild(inGameSelectedSystem);
 
@@ -134,10 +128,10 @@ public class RivalID : MonoBehaviour
             SetSoldierAnim(SoldierMoveSystem.SoldierAnimType.idle);
         }
 
-        if (GetCurrentHP() > 0)
+        if (GetRivalHealth() > 0)
             _rivalMove.NavmeshResume();
 
-        _isTouchBuild = false;
+        _rivalStat = RivalSpawnSystem.RivalStat.focusBuild;
     }
 
     private bool CheckBar(float rateHP)
@@ -161,13 +155,13 @@ public class RivalID : MonoBehaviour
         SoundSystem.Instance.CallBuildHit();
         inGameSelectedSystem.SetHealth(inGameSelectedSystem.GetHealth() - _rivalData.damages[_level - 1]);
     }
-    private void CheckHealth()
+    private void CheckIfAlive()
     {
-        if (_currentHP <= 0 && !_isDead)
+        if (_currentHP <= 0 && _rivalStat != RivalSpawnSystem.RivalStat.dead)
         {
-            _isDead = true;
+            _rivalStat = RivalSpawnSystem.RivalStat.dead;
             ParticalManager.Instance.CallMoneyPartical(gameObject);
-            RivalSpawnSystem.Instance.DownRival(gameObject);
+            RivalSpawnSystem.Instance.ClearDeadRivals(gameObject);
             SetBar();
             TextSystem.Instance.PlusTime(gameObject);
             SoundSystem.Instance.CallBuildPlacement();
@@ -182,7 +176,7 @@ public class RivalID : MonoBehaviour
     {
         _barImage.fillAmount = 1;
     }
-    private GameObject SelectBuild()
+    private GameObject FindNearestBuilding()
     {
         GridSystem gridSystem = GridSystem.Instance;
 

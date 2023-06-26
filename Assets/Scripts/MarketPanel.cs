@@ -124,7 +124,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
 
         if (itemData.fieldPrice.fields[itemDataCount] <= gameManager.money && itemData.factor.fields[itemDataCount] < itemData.maxFactor.fields[itemDataCount])
         {
-            InfoPanel.InfoPanelStat tempInfoStat = infoPanel.OnBuyInfoPanel(InfoPanel.InfoPanelStat.motherbase);
+            InfoPanel.InfoPanelStat tempInfoStat = infoPanel.OpenBuyInfoPanel(InfoPanel.InfoPanelStat.motherbase);
 
             if (tempInfoStat != InfoPanel.InfoPanelStat.free)
                 NewItemSelected(tempInfoStat);
@@ -156,7 +156,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
         }
 
         if (!isNewPanel)
-            InfoPanel.Instance.OffBuyInfoPanel();
+            InfoPanel.Instance.CloseBuyInfoPanel();
     }
     private void BarracksBuyFunc()
     {
@@ -168,7 +168,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
 
         if (FirstTapMechanic.Instance.isMotherBase && itemData.fieldPrice.fields[itemDataCount] <= gameManager.money && itemData.factor.fields[itemDataCount] < itemData.maxFactor.fields[itemDataCount])
         {
-            InfoPanel.InfoPanelStat tempInfoStat = infoPanel.OnBuyInfoPanel(InfoPanel.InfoPanelStat.barracks);
+            InfoPanel.InfoPanelStat tempInfoStat = infoPanel.OpenBuyInfoPanel(InfoPanel.InfoPanelStat.barracks);
 
             if (tempInfoStat != InfoPanel.InfoPanelStat.free)
                 NewItemSelected(tempInfoStat);
@@ -199,7 +199,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
         }
 
         if (!isNewPanel)
-            InfoPanel.Instance.OffBuyInfoPanel();
+            InfoPanel.Instance.CloseBuyInfoPanel();
     }
     private void CentralBuyFunc()
     {
@@ -211,7 +211,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
 
         if (FirstTapMechanic.Instance.isMotherBase && itemData.fieldPrice.fields[itemDataCount] <= gameManager.money && itemData.factor.fields[itemDataCount] < itemData.maxFactor.fields[itemDataCount])
         {
-            InfoPanel.InfoPanelStat tempInfoStat = infoPanel.OnBuyInfoPanel(InfoPanel.InfoPanelStat.central);
+            InfoPanel.InfoPanelStat tempInfoStat = infoPanel.OpenBuyInfoPanel(InfoPanel.InfoPanelStat.central);
 
             if (tempInfoStat != InfoPanel.InfoPanelStat.free)
                 NewItemSelected(tempInfoStat);
@@ -242,7 +242,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
         }
 
         if (!isNewPanel)
-            InfoPanel.Instance.OffBuyInfoPanel();
+            InfoPanel.Instance.CloseBuyInfoPanel();
     }
     private void MinerBuyFunc()
     {
@@ -254,7 +254,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
 
         if (FirstTapMechanic.Instance.isMotherBase && itemData.fieldPrice.fields[itemDataCount] <= gameManager.money && itemData.factor.fields[itemDataCount] < itemData.maxFactor.fields[itemDataCount])
         {
-            InfoPanel.InfoPanelStat tempInfoStat = infoPanel.OnBuyInfoPanel(InfoPanel.InfoPanelStat.miner);
+            InfoPanel.InfoPanelStat tempInfoStat = infoPanel.OpenBuyInfoPanel(InfoPanel.InfoPanelStat.miner);
 
             if (tempInfoStat != InfoPanel.InfoPanelStat.free)
                 NewItemSelected(tempInfoStat);
@@ -285,7 +285,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
         }
 
         if (!isNewPanel)
-            InfoPanel.Instance.OffBuyInfoPanel();
+            InfoPanel.Instance.CloseBuyInfoPanel();
     }
     private void RepairmanBuyFunc()
     {
@@ -297,7 +297,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
 
         if (FirstTapMechanic.Instance.isMotherBase && itemData.fieldPrice.fields[itemDataCount] <= gameManager.money && itemData.factor.fields[itemDataCount] < itemData.maxFactor.fields[itemDataCount])
         {
-            InfoPanel.InfoPanelStat tempInfoStat = infoPanel.OnBuyInfoPanel(InfoPanel.InfoPanelStat.repairman);
+            InfoPanel.InfoPanelStat tempInfoStat = infoPanel.OpenBuyInfoPanel(InfoPanel.InfoPanelStat.repairman);
 
             if (tempInfoStat != InfoPanel.InfoPanelStat.free)
                 NewItemSelected(tempInfoStat);
@@ -328,7 +328,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
         }
 
         if (!isNewPanel)
-            InfoPanel.Instance.OffBuyInfoPanel();
+            InfoPanel.Instance.CloseBuyInfoPanel();
     }
     private void HospitalBuyFunc()
     {
@@ -340,7 +340,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
 
         if (FirstTapMechanic.Instance.isMotherBase && itemData.fieldPrice.fields[itemDataCount] <= gameManager.money && itemData.factor.fields[itemDataCount] < itemData.maxFactor.fields[itemDataCount])
         {
-            InfoPanel.InfoPanelStat tempInfoStat = infoPanel.OnBuyInfoPanel(InfoPanel.InfoPanelStat.hospital);
+            InfoPanel.InfoPanelStat tempInfoStat = infoPanel.OpenBuyInfoPanel(InfoPanel.InfoPanelStat.hospital);
 
             if (tempInfoStat != InfoPanel.InfoPanelStat.free)
                 NewItemSelected(tempInfoStat);
@@ -371,7 +371,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
         }
 
         if (!isNewPanel)
-            InfoPanel.Instance.OffBuyInfoPanel();
+            InfoPanel.Instance.CloseBuyInfoPanel();
     }
     private void ArcherBuyFunc()
     {
@@ -383,7 +383,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
 
         if (FirstTapMechanic.Instance.isMotherBase && itemData.fieldPrice.fields[itemDataCount] <= gameManager.money && itemData.factor.fields[itemDataCount] < itemData.maxFactor.fields[itemDataCount])
         {
-            InfoPanel.InfoPanelStat tempInfoStat = infoPanel.OnBuyInfoPanel(InfoPanel.InfoPanelStat.archer);
+            InfoPanel.InfoPanelStat tempInfoStat = infoPanel.OpenBuyInfoPanel(InfoPanel.InfoPanelStat.archer);
 
             if (tempInfoStat != InfoPanel.InfoPanelStat.free)
                 NewItemSelected(tempInfoStat);
@@ -414,7 +414,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
         }
 
         if (!isNewPanel)
-            InfoPanel.Instance.OffBuyInfoPanel();
+            InfoPanel.Instance.CloseBuyInfoPanel();
     }
 
     private void MotherBaseBuyVisibility()

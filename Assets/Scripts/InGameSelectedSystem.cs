@@ -54,25 +54,23 @@ public class InGameSelectedSystem : MonoBehaviour
 
         if (SelectSystem.Instance.GetSelectEnumStat() == SelectSystem.SelectEnumStat.Repair)
             RepairTime(BuildManager.Instance.GetMainBuildTouch().gameObject.GetComponent<RepairmanID>().GetRepairCost());
-        else if (infoPanel.BuyInfoPanelStatIsFull())
+        else if (infoPanel.IsBuyInfoPanelStatEmpty())
         {
             BuildManager.Instance.SetMainBuildTouch(GetComponent<MainBuildTouch>());
-            infoPanel.OnShowInfoPanel(gameObject, mainBuildStat);
+            infoPanel.OpenShowInfoPanel(gameObject, mainBuildStat);
         }
     }
     private void RepairTime(int repairCost)
     {
         if (repairCost < GameManager.Instance.money)
         {
+            InGameSelectedSystem inGameSelectedSystem = _mainBuild.GetComponent<InGameSelectedSystem>();
+
             MoneySystem.Instance.MoneyTextRevork(-repairCost);
 
-            if (mainBuildStat == InfoPanel.InfoPanelStat.motherbase) _mainBuild.GetComponent<MotherBaseID>().RepairHP();
-            else if (mainBuildStat == InfoPanel.InfoPanelStat.repairman) _mainBuild.GetComponent<RepairmanID>().RepairHP();
-            else if (mainBuildStat == InfoPanel.InfoPanelStat.miner) _mainBuild.GetComponent<MinerID>().RepairHP();
-            else if (mainBuildStat == InfoPanel.InfoPanelStat.hospital) _mainBuild.GetComponent<HospitalID>().RepairHP();
-            else if (mainBuildStat == InfoPanel.InfoPanelStat.central) _mainBuild.GetComponent<CentralID>().RepairHP();
-            else if (mainBuildStat == InfoPanel.InfoPanelStat.barracks) _mainBuild.GetComponent<BarracksID>().RepairHP();
-            else if (mainBuildStat == InfoPanel.InfoPanelStat.archer) _mainBuild.GetComponent<ArcherID>().RepairHP();
+            inGameSelectedSystem.SetHealth(BuildManager.Instance.GetBuildData().buildMainDatas[(int)mainBuildStat].HPs[inGameSelectedSystem.GetLevel() - 1]);
+            ParticalManager.Instance.CallBuildRestoredPartical(gameObject);
+            SelectSystem.Instance.SelectFree();
         }
     }
 }

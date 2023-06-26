@@ -42,12 +42,6 @@ public class BarracksID : MonoBehaviour
         SaveHP();
     }
 
-    public void RepairHP()
-    {
-        inGameSelectedSystem.SetHealth(_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]);
-        ParticalManager.Instance.CallBuildRestoredPartical(gameObject);
-        SelectSystem.Instance.SelectFree();
-    }
     public void CostTextPlacement(TMP_Text upgradeCostText)
     {
         if (inGameSelectedSystem.GetLevel() == 3)
@@ -63,7 +57,7 @@ public class BarracksID : MonoBehaviour
             {
                 BuildVisibility(inGameSelectedSystem.GetLevel() - 1, false);
                 MoneySystem.Instance.MoneyTextRevork(-_buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1]);
-                InfoPanel.Instance.OffShowInfoPanel();
+                InfoPanel.Instance.CloseShowInfoPanel();
                 inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel() + 1);
                 UpdateLevel();
                 CostTextPlacement(upgradeCostText);

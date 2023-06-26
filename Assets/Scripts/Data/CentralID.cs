@@ -40,13 +40,6 @@ public class CentralID : MonoBehaviour
         SaveHP();
     }
 
-    public void RepairHP()
-    {
-        inGameSelectedSystem.SetHealth(_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]);
-        ParticalManager.Instance.CallBuildRestoredPartical(gameObject);
-        SelectSystem.Instance.SelectFree();
-    }
-
     public void UpgradeTime(TMP_Text perCountText, TMP_Text upgradeCostText)
     {
         if (inGameSelectedSystem.GetLevel() < _buildData.buildMainDatas[(int)_buildType].HPs.Count)
@@ -54,7 +47,7 @@ public class CentralID : MonoBehaviour
             {
                 BuildVisibility(inGameSelectedSystem.GetLevel(), false);
                 MoneySystem.Instance.MoneyTextRevork(-_buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1]);
-                InfoPanel.Instance.OffShowInfoPanel();
+                InfoPanel.Instance.CloseShowInfoPanel();
                 inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel() + 1);
                 CostTextPlacement(perCountText, upgradeCostText);
                 UpdateLevel();

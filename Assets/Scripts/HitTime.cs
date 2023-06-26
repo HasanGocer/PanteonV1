@@ -65,7 +65,7 @@ public class HitTime : MonoBehaviour
     {
         RivalID rivalID = focusRival.GetComponent<RivalID>();
 
-        rivalID.DownHP(_damage);
+        rivalID.DecreaseRivalHealth(_damage);
         hit.SetActive(false);
     }
 }

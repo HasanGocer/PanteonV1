@@ -4,37 +4,45 @@ using UnityEngine;
 
 public class RivalSpawnSystem : MonoSingleton<RivalSpawnSystem>
 {
+    public enum RivalStat
+    {
+        free,
+        focusSoldier,
+        focusBuild,
+        dead
+    }
+
     [SerializeField] int _OPRivalCount;
     public List<GameObject> rivals = new List<GameObject>();
     [SerializeField] GameObject _rivalParent;
 
-    public void RivalWavePlacement()
+    public void StartEnemyWave()
     {
         GameManager gameManager = GameManager.Instance;
 
         for (int i = 0; i < gameManager.level / 1; i++)
-            RivalPlacement(1);
+            SetEnemyStatsInWave(1);
         for (int i = 0; i < gameManager.level / 10; i++)
-            RivalPlacement(2);
+            SetEnemyStatsInWave(2);
         for (int i = 0; i < gameManager.level / 20; i++)
-            RivalPlacement(3);
+            SetEnemyStatsInWave(3);
 
         FinishSystem.Instance.SetRivalCount(gameManager.level / 1 + gameManager.level / 10 + gameManager.level / 20);
     }
-    public void DownRival(GameObject rival)
+    public void ClearDeadRivals(GameObject rival)
     {
         rivals.Remove(rival);
     }
 
-    private void RivalPlacement(int rivalLevelCount)
+    private void SetEnemyStatsInWave(int rivalLevelCount)
     {
-        GameObject rival = ObjectPool.Instance.GetPooledObjectAdd(_OPRivalCount, RivalPlacement(), Vector3.zero, _rivalParent.transform);
+        GameObject rival = ObjectPool.Instance.GetPooledObjectAdd(_OPRivalCount, SpawnRivalsInWave(), Vector3.zero, _rivalParent.transform);
 
         rivals.Add(rival);
         SoldierMoveSystem.Instance.SetSoldier(rival);
         rival.GetComponent<RivalID>().RivalIDStart(rivalLevelCount);
     }
-    private Vector2 RivalPlacement()
+    private Vector2 SpawnRivalsInWave()
     {
         GridSystem gridSystem = GridSystem.Instance;
 

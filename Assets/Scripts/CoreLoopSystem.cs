@@ -21,7 +21,7 @@ public class CoreLoopSystem : MonoSingleton<CoreLoopSystem>
 
     public void WaveTime()
     {
-        RivalSpawnSystem.Instance.RivalWavePlacement();
+        RivalSpawnSystem.Instance.StartEnemyWave();
     }
 
 }

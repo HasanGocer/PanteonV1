@@ -30,7 +30,7 @@ public class BuildManager : MonoSingleton<BuildManager>
     }
     public void BuildPlacement()
     {
-        if (_mainBuildTouch.isReady && _mainBuildTouch.CheckGrid())
+        if (_mainBuildTouch.isReady && _mainBuildTouch.CheckGridIDOccupancy())
         {
             InGameSelectedSystem inGameSelectedSystem = _mainBuildTouch.GetComponent<InGameSelectedSystem>();
 
@@ -41,7 +41,7 @@ public class BuildManager : MonoSingleton<BuildManager>
             StartCoroutine(_mainBuildTouch.mainBuildTouch.BuildPlacement());
             MarketPanel.Instance.ItemSelected(InfoPanel.Instance.GetBuyInfoPanelStat());
             inGameSelectedSystem.BuildPlacement();
-            _mainBuildTouch.SaveGridID();
+            _mainBuildTouch.PlaceBuildingOnGridID();
             FirstTapMechanic.Instance.FTStart();
             _mainBuildTouch = null;
         }
@@ -96,6 +96,11 @@ public class BuildManager : MonoSingleton<BuildManager>
         _mainBuildTouch = null;
     }
 
+    public BuildData GetBuildData()
+    {
+        return _buildData;
+    }
+
     public void SetMaterialRed(SpriteRenderer background)
     {
         background.color = _redMaterial.color;
@@ -107,9 +112,9 @@ public class BuildManager : MonoSingleton<BuildManager>
 
     public void Update()
     {
-        if (_mainBuildTouch != null && !InfoPanel.Instance.BuyInfoPanelStatIsFull())
+        if (_mainBuildTouch != null && !InfoPanel.Instance.IsBuyInfoPanelStatEmpty())
         {
-            _mainBuildTouch.DrawBackground(_mainBuildTouch.CheckBuilds());
+            _mainBuildTouch.SetBackgroundColorByPlacementValidity(_mainBuildTouch.CheckPlacementValidity());
             FollowMouse();
         }
     }

@@ -10,7 +10,7 @@ public class MainBuildTouch : MonoBehaviour
     public BuildTouch mainBuildTouch;
     public bool isReady;
 
-    public bool CheckBuilds()
+    public bool CheckPlacementValidity()
     {
         BuildTouch buildTouch;
         isReady = true;
@@ -27,7 +27,7 @@ public class MainBuildTouch : MonoBehaviour
     {
         BuildManager.Instance.SetMaterialGreen(_background);
     }
-    public void DrawBackground(bool tempCheck)
+    public void SetBackgroundColorByPlacementValidity(bool tempCheck)
     {
         BuildManager buildManager = BuildManager.Instance;
 
@@ -36,17 +36,17 @@ public class MainBuildTouch : MonoBehaviour
         else
             buildManager.SetMaterialRed(_background);
     }
-    public void SaveGridID()
+    public void PlaceBuildingOnGridID()
     {
-        GridChecked();
-        GridSave();
+        SaveEmptyGridSpaces();
+        SaveBuildingToGrid();
         GameManager.Instance.GridPlacementWrite(GridSystem.Instance.mainGrid);
     }
     public BuildTouch GetBuildTouch()
     {
         return mainBuildTouch;
     }
-    public bool CheckGrid()
+    public bool CheckGridIDOccupancy()
     {
         bool isChecked = true;
         for (int i1 = 0; i1 < _buildTouches.Count; i1++)
@@ -56,7 +56,7 @@ public class MainBuildTouch : MonoBehaviour
         return isChecked;
     }
 
-    private void GridChecked()
+    private void SaveEmptyGridSpaces()
     {
         GridSystem gridSystem = GridSystem.Instance;
 
@@ -66,7 +66,7 @@ public class MainBuildTouch : MonoBehaviour
             gridSystem.mainGrid.horizontalGrids[buildTouch.verticalCount].gridGameObject[buildTouch.horizontalCount] = gameObject;
         }
     }
-    private void GridSave()
+    private void SaveBuildingToGrid()
     {
         GridSystem gridSystem = GridSystem.Instance;
 

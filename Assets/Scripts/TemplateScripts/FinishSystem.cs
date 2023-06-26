@@ -24,7 +24,6 @@ public class FinishSystem : MonoSingleton<FinishSystem>
     //dalgayý sýfýrlýyor
     private void FinishTime()
     {
-        print(3);
         GameManager gameManager = GameManager.Instance;
 
         gameManager.SetLevel();

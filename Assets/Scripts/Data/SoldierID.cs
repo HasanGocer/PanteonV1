@@ -101,7 +101,7 @@ public class SoldierID : MonoBehaviour
     {
         RivalID rivalID = _focusRival.GetComponent<RivalID>();
 
-        while (_isFighting && rivalID.GetCurrentHP() > 0 && GetCurrentHP() > 0)
+        while (_isFighting && rivalID.GetRivalHealth() > 0 && GetCurrentHP() > 0)
         {
             HitRival(rivalID);
 
@@ -147,7 +147,7 @@ public class SoldierID : MonoBehaviour
         SetSoldierAnim(SoldierMoveSystem.SoldierAnimType.attack);
 
         SoundSystem.Instance.CallSword();
-        rivalID.DownHP(_SoldierData.damages[_level - 1]);
+        rivalID.DecreaseRivalHealth(_SoldierData.damages[_level - 1]);
     }
     private void FollowRival()
     {

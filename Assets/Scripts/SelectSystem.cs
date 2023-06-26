@@ -19,31 +19,31 @@ public class SelectSystem : MonoSingleton<SelectSystem>
         return _selectEnumStat;
     }
 
-    public void SelectedObjectFree()
+    public void EventFinish()
     {
         if (_selectEnumStat == SelectEnumStat.soldierMove)
             SoldierMoveSystem.Instance.SoldierFree();
         else if (_selectEnumStat == SelectEnumStat.BuildPlacement)
             MarketPanel.Instance.NewItemSelected(InfoPanel.Instance.GetBuyInfoPanelStat());
         else if (_selectEnumStat == SelectEnumStat.Repair)
-            InfoPanel.Instance.OffShowInfoPanel();
+            InfoPanel.Instance.CloseShowInfoPanel();
 
         SelectFree();
     }
 
     public void SelectSoldierMove()
     {
-        SelectedObjectFree();
+        EventFinish();
         _selectEnumStat = SelectEnumStat.soldierMove;
     }
     public void SelectRepairTime()
     {
-        SelectedObjectFree();
+        EventFinish();
         _selectEnumStat = SelectEnumStat.Repair;
     }
     public void SelectBuildPlacement()
     {
-        SelectedObjectFree();
+        EventFinish();
         _selectEnumStat = SelectEnumStat.BuildPlacement;
     }
     public void SelectFree()

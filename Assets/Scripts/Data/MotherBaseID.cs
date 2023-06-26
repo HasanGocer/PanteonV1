@@ -36,13 +36,6 @@ public class MotherBaseID : MonoBehaviour
         SaveHP();
     }
 
-    public void RepairHP()
-    {
-        inGameSelectedSystem.SetHealth(_buildData.buildMainDatas[(int)_buildType].HPs[0]);
-        ParticalManager.Instance.CallBuildRestoredPartical(gameObject);
-        SelectSystem.Instance.SelectFree();
-    }
-
     private void Update()
     {
         if (inGameSelectedSystem.GetIsPlacement() && CheckBar((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[0]))
