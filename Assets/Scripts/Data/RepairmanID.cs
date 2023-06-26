@@ -8,6 +8,7 @@ public class RepairmanID : MonoBehaviour
     [Header("Standart_Field")]
     [Space(10)]
 
+    [SerializeField] BuildData _buildData;
     [SerializeField] RepairmanData _repairmanData;
     [SerializeField] InGameSelectedSystem inGameSelectedSystem;
 
@@ -15,17 +16,22 @@ public class RepairmanID : MonoBehaviour
     [Space(10)]
 
     [SerializeField] Image _barImage;
+    [SerializeField] InfoPanel.InfoPanelStat _buildType;
     bool isCrash;
 
-    public void StartDataPlacement(bool isNew)
+    private void Awake()
     {
-        if (isNew)
-        {
-            GridSystem.Instance.mainGrid.buildHP.Add(_repairmanData.HP);
-            inGameSelectedSystem.SetHealth(_repairmanData.HP);
-        }
-        else
-            inGameSelectedSystem.SetHealth(GridSystem.Instance.mainGrid.buildHP[GridSystem.Instance.mainGrid.builds.Count - 1]); ;
+        inGameSelectedSystem.startFunc = StartDataPlacement;
+    }
+
+    public void StartDataPlacement()
+    {
+        inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel());
+    }
+
+    public int GetRepairCost()
+    {
+        return _repairmanData.repairCost;
     }
 
     public void HPDown(int downCount)
@@ -36,15 +42,15 @@ public class RepairmanID : MonoBehaviour
 
     public void RepairHP()
     {
-        inGameSelectedSystem.SetHealth(_repairmanData.HP);
+        inGameSelectedSystem.SetHealth(_buildData.buildMainDatas[(int)_buildType].HPs[0]);
         ParticalManager.Instance.CallBuildRestoredPartical(gameObject);
         SelectSystem.Instance.SelectFree();
     }
 
     public void Update()
     {
-        if (inGameSelectedSystem.GetIsPlacement() && CheckBar((float)inGameSelectedSystem.GetHealth() / (float)_repairmanData.HP))
-            BarUpdate((float)inGameSelectedSystem.GetHealth() / (float)_repairmanData.HP);
+        if (inGameSelectedSystem.GetIsPlacement() && CheckBar((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[0]))
+            BarUpdate((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[0]);
 
         if (!isCrash && inGameSelectedSystem.GetIsPlacement() && inGameSelectedSystem.GetHealth() <= 0) BreakTime();
     }

@@ -9,6 +9,7 @@ public class MinerID : MonoBehaviour
     [Header("Standart_Field")]
     [Space(10)]
 
+    [SerializeField] BuildData _buildData;
     [SerializeField] MinerData _minerData;
     [SerializeField] MinerTime _minerTime;
     [SerializeField] InGameSelectedSystem inGameSelectedSystem;
@@ -18,20 +19,19 @@ public class MinerID : MonoBehaviour
     [Space(10)]
 
     [SerializeField] Image _barImage;
+    [SerializeField] InfoPanel.InfoPanelStat _buildType;
     bool isCrash;
 
-    public void StartDataPlacement(bool isNew, int level)
+    private void Awake()
     {
-        if (isNew)
-        {
-            inGameSelectedSystem.SetHealth(_minerData.HP[inGameSelectedSystem.GetLevel() - 1]);
-            GridSystem.Instance.mainGrid.buildHP.Add(_minerData.HP[inGameSelectedSystem.GetLevel() - 1]);
-        }
-        else
-            inGameSelectedSystem.SetHealth(GridSystem.Instance.mainGrid.buildHP[GridSystem.Instance.mainGrid.builds.Count - 1]); ;
+        inGameSelectedSystem.startFunc = StartDataPlacement;
+    }
 
-        _upgrades[level - 1].SetActive(true);
+    public void StartDataPlacement()
+    {
+        _upgrades[inGameSelectedSystem.GetLevel() - 1].SetActive(true);
         _minerTime.IsStart();
+        inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel());
     }
 
     public void HPDown(int downCount)
@@ -42,20 +42,20 @@ public class MinerID : MonoBehaviour
 
     public void RepairHP()
     {
-        inGameSelectedSystem.SetHealth(_minerData.HP[inGameSelectedSystem.GetLevel() - 1]);
+        inGameSelectedSystem.SetHealth(_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]);
         ParticalManager.Instance.CallBuildRestoredPartical(gameObject);
         SelectSystem.Instance.SelectFree();
     }
 
     public void UpgradeTime(TMP_Text perCountText, TMP_Text upgradeCostText)
     {
-        if (inGameSelectedSystem.GetLevel() - 1 < _minerData.HP.Count)
-            if (GameManager.Instance.money >= _minerData.Cost[inGameSelectedSystem.GetLevel() - 1])
+        if (inGameSelectedSystem.GetLevel() - 1 < _buildData.buildMainDatas[(int)_buildType].HPs.Count)
+            if (GameManager.Instance.money >= _buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1])
             {
                 BuildVisibility(inGameSelectedSystem.GetLevel(), false);
-                MoneySystem.Instance.MoneyTextRevork(-_minerData.Cost[inGameSelectedSystem.GetLevel() - 1]);
+                MoneySystem.Instance.MoneyTextRevork(-_buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1]);
                 InfoPanel.Instance.OffShowInfoPanel();
-                inGameSelectedSystem.UpLevel();
+                inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel() + 1);
                 UpdateLevel();
                 CostTextPlacement(perCountText, upgradeCostText);
                 SetHP();
@@ -69,7 +69,7 @@ public class MinerID : MonoBehaviour
         if (inGameSelectedSystem.GetLevel() == 3)
             upgradeCostText.text = "Full";
         else
-            upgradeCostText.text = _minerData.Cost[inGameSelectedSystem.GetLevel() - 1].ToString();
+            upgradeCostText.text = _buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1].ToString();
     }
     public void MinerTime()
     {
@@ -78,8 +78,8 @@ public class MinerID : MonoBehaviour
 
     public void Update()
     {
-        if (inGameSelectedSystem.GetIsPlacement() && CheckBar((float)inGameSelectedSystem.GetHealth() / (float)_minerData.HP[inGameSelectedSystem.GetLevel() - 1]))
-            BarUpdate((float)inGameSelectedSystem.GetHealth() / (float)_minerData.HP[inGameSelectedSystem.GetLevel() - 1]);
+        if (inGameSelectedSystem.GetIsPlacement() && CheckBar((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]))
+            BarUpdate((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]);
 
         if (!isCrash && inGameSelectedSystem.GetIsPlacement() && inGameSelectedSystem.GetHealth() <= 0) BreakTime();
     }
@@ -122,7 +122,7 @@ public class MinerID : MonoBehaviour
 
     private void SetHP()
     {
-        inGameSelectedSystem.SetHealth(_minerData.HP[inGameSelectedSystem.GetLevel() - 1]);
+        inGameSelectedSystem.SetHealth(_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]);
     }
     private void BuildVisibility(int level, bool isOpen)
     {

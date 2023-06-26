@@ -78,7 +78,7 @@ public class GridSystem : MonoSingleton<GridSystem>
 
         for (int i = 0; i < mainGrid.buildTypes.Count; i++)
         {
-            build = BuildManager.Instance.GetBuild((int)mainGrid.buildTypes[i]);
+            build = BuildManager.Instance.GenerateBuild((int)mainGrid.buildTypes[i]);
 
             BuildGridAdded(build);
             BuildPlacement(mainGrid.buildLevel[i], ref build, mainGrid.buildID[i]);
@@ -140,17 +140,16 @@ public class GridSystem : MonoSingleton<GridSystem>
     private void BuildPlacement(int level, ref GameObject build, BuildID buildID)
     {
         MainBuildTouch mainBuildTouch = build.GetComponent<MainBuildTouch>();
-
-        BuildManager.Instance.AddMainBuildTouch(mainBuildTouch);
-
+        InGameSelectedSystem inGameSelectedSystem = build.GetComponent<InGameSelectedSystem>();
         BuildTouch buildTouch = mainBuildTouch.GetBuildTouch();
 
+        BuildManager.Instance.SetMainBuildTouch(mainBuildTouch);
         buildTouch.OverrideSelectObject(mainGrid.horizontalGrids[buildID.buildIntVertical].gridGameObject[buildID.buildIntHorizontal]);
         StartCoroutine(buildTouch.BuildPlacement());
-        mainBuildTouch.GetComponent<InGameSelectedSystem>().BuildPlacement();
-        BuildManager.Instance.DataPlacement(false, level, build.GetComponent<InGameSelectedSystem>().mainBuildStat);
+        inGameSelectedSystem.BuildPlacement();
+        BuildManager.Instance.DataPlacement(false, level, inGameSelectedSystem, inGameSelectedSystem.mainBuildStat);
         mainBuildTouch.DrawGreen();
-        BuildManager.Instance.ClearMainBuildTouch();
+        BuildManager.Instance.SetMainBuildTouchToNull();
     }
 
     private void GridParentPlacement(GameObject grid)

@@ -48,7 +48,7 @@ public class InfoPanel : MonoSingleton<InfoPanel>
     [SerializeField] TMP_Text _repairText;
     [SerializeField] TMP_Text _archerUpgradeText;
 
-    public int repairCost;
+    [SerializeField] int _repairCost;
     public int soldierCost;
 
     public void ButtonPlacement()
@@ -67,7 +67,7 @@ public class InfoPanel : MonoSingleton<InfoPanel>
     public void TextPlacement()
     {
         _barracksAddSoliderText.text = soldierCost.ToString();
-        _repairText.text = repairCost.ToString();
+        _repairText.text = _repairCost.ToString();
     }
     public InfoPanelStat GetBuyInfoPanelStat()
     {

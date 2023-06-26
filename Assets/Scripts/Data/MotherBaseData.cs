@@ -6,5 +6,5 @@ using UnityEngine;
 
 public class MotherBaseData : ScriptableObject
 {
-    public int HP;
+
 }

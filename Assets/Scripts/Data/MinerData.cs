@@ -6,7 +6,5 @@ using UnityEngine;
 
 public class MinerData : ScriptableObject
 {
-    public List<int> HP = new List<int>();
-    public List<int> Cost = new List<int>();
     public List<int> PerGem = new List<int>();
 }

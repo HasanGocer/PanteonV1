@@ -19763,7 +19763,7 @@ MonoBehaviour:
   _minerPerText: {fileID: 1924768674}
   _repairText: {fileID: 2713278008859978483}
   _archerUpgradeText: {fileID: 2713278008779400501}
-  repairCost: 50
+  _repairCost: 50
   soldierCost: 50
 --- !u!4 &3463060652433046643
 Transform:
@@ -20317,6 +20317,7 @@ MonoBehaviour:
   _OPBuildCount: 0
   _redMaterial: {fileID: 2100000, guid: 7960345346fae5349ae554783b500d9f, type: 2}
   _greenMaterial: {fileID: 2100000, guid: a3ecf10b1f567e94ca7cc6acae99c2c1, type: 2}
+  _buildData: {fileID: 0}
   _buildParent: {fileID: 2052451580}
   _buildSpawnPos: {fileID: 2052451580}
   buildMoveTime: 0.2

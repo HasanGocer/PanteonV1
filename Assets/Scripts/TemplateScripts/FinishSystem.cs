@@ -6,14 +6,14 @@ public class FinishSystem : MonoSingleton<FinishSystem>
 {
     int _rivalCount, _currentRivalCount;
 
-    //Her dalga için dalgadaki toplam rival sayýsýný iþliyor
+    //Her dalga icin dalgadaki toplam rival sayýsýný isliyor
     public void SetRivalCount(int rivalCount)
     {
         _currentRivalCount = 0;
         _rivalCount = rivalCount;
     }
 
-    //her rival öldüðünde çalýþýr ve tüm rivallerin ölüp ölmediðini kontrol ediyor
+    //her rival oldugunde calýsýr ve tum rivallerin olup olmedigini kontrol ediyor
     public void FinishCheck()
     {
         _currentRivalCount++;

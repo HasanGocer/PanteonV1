@@ -6,7 +6,5 @@ using UnityEngine;
 
 public class HospitalData : ScriptableObject
 {
-    public int HP;
-
     public int treatmentTime;
 }

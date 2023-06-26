@@ -9,6 +9,7 @@ public class CentralID : MonoBehaviour
     [Header("Standart_Field")]
     [Space(10)]
 
+    [SerializeField] BuildData _buildData;
     [SerializeField] CentralData _centralData;
     [SerializeField] CentralTime _centralTime;
     [SerializeField] InGameSelectedSystem inGameSelectedSystem;
@@ -18,21 +19,19 @@ public class CentralID : MonoBehaviour
     [Space(10)]
 
     [SerializeField] Image _barImage;
+    [SerializeField] InfoPanel.InfoPanelStat _buildType;
     bool isCrash;
 
-    public void StartDataPlacement(bool isNew, int level)
+    private void Awake()
     {
-        if (isNew)
-        {
-            GridSystem.Instance.mainGrid.buildHP.Add(_centralData.HP[inGameSelectedSystem.GetLevel() - 1]);
-            inGameSelectedSystem.SetHealth(_centralData.HP[inGameSelectedSystem.GetLevel() - 1]);
-        }
-        else
-            inGameSelectedSystem.SetHealth(GridSystem.Instance.mainGrid.buildHP[GridSystem.Instance.mainGrid.builds.Count - 1]); ;
+        inGameSelectedSystem.startFunc = StartDataPlacement;
+    }
 
-
-        _upgrades[level - 1].SetActive(true);
+    public void StartDataPlacement()
+    {
+        _upgrades[inGameSelectedSystem.GetLevel() - 1].SetActive(true);
         _centralTime.IsStart();
+        inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel());
     }
 
     public void HPDown(int downCount)
@@ -43,20 +42,20 @@ public class CentralID : MonoBehaviour
 
     public void RepairHP()
     {
-        inGameSelectedSystem.SetHealth(_centralData.HP[inGameSelectedSystem.GetLevel() - 1]);
+        inGameSelectedSystem.SetHealth(_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]);
         ParticalManager.Instance.CallBuildRestoredPartical(gameObject);
         SelectSystem.Instance.SelectFree();
     }
 
     public void UpgradeTime(TMP_Text perCountText, TMP_Text upgradeCostText)
     {
-        if (inGameSelectedSystem.GetLevel() < _centralData.HP.Count)
-            if (GameManager.Instance.money >= _centralData.Cost[inGameSelectedSystem.GetLevel() - 1])
+        if (inGameSelectedSystem.GetLevel() < _buildData.buildMainDatas[(int)_buildType].HPs.Count)
+            if (GameManager.Instance.money >= _buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1])
             {
                 BuildVisibility(inGameSelectedSystem.GetLevel(), false);
-                MoneySystem.Instance.MoneyTextRevork(-_centralData.Cost[inGameSelectedSystem.GetLevel() - 1]);
+                MoneySystem.Instance.MoneyTextRevork(-_buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1]);
                 InfoPanel.Instance.OffShowInfoPanel();
-                inGameSelectedSystem.UpLevel();
+                inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel() + 1);
                 CostTextPlacement(perCountText, upgradeCostText);
                 UpdateLevel();
                 SetHP();
@@ -70,7 +69,7 @@ public class CentralID : MonoBehaviour
         if (inGameSelectedSystem.GetLevel() == 3)
             upgradeCostText.text = "Full";
         else
-            upgradeCostText.text = _centralData.Cost[inGameSelectedSystem.GetLevel() - 1].ToString();
+            upgradeCostText.text = _buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1].ToString();
     }
     public void CentralTime()
     {
@@ -79,8 +78,8 @@ public class CentralID : MonoBehaviour
 
     public void Update()
     {
-        if (inGameSelectedSystem.GetIsPlacement() && CheckBar((float)inGameSelectedSystem.GetHealth() / (float)_centralData.HP[inGameSelectedSystem.GetLevel() - 1]))
-            BarUpdate((float)inGameSelectedSystem.GetHealth() / (float)_centralData.HP[inGameSelectedSystem.GetLevel() - 1]);
+        if (inGameSelectedSystem.GetIsPlacement() && CheckBar((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]))
+            BarUpdate((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]);
 
         if (!isCrash && inGameSelectedSystem.GetIsPlacement() && inGameSelectedSystem.GetHealth() <= 0) BreakTime();
     }
@@ -124,7 +123,7 @@ public class CentralID : MonoBehaviour
 
     private void SetHP()
     {
-        inGameSelectedSystem.SetHealth(_centralData.HP[inGameSelectedSystem.GetLevel() - 1]);
+        inGameSelectedSystem.SetHealth(_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]);
     }
     private void BuildVisibility(int level, bool isOpen)
     {

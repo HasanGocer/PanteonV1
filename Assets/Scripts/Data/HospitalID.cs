@@ -8,6 +8,7 @@ public class HospitalID : MonoBehaviour
     [Header("Standart_Field")]
     [Space(10)]
 
+    [SerializeField] BuildData _buildData;
     [SerializeField] HospitalData _hospitalData;
     [SerializeField] InGameSelectedSystem inGameSelectedSystem;
 
@@ -15,18 +16,17 @@ public class HospitalID : MonoBehaviour
     [Space(10)]
 
     [SerializeField] Image _barImage;
+    [SerializeField] InfoPanel.InfoPanelStat _buildType;
     bool isCrash;
 
-    public void StartDataPlacement(bool isNew)
+    private void Awake()
     {
-        if (isNew)
-        {
-            GridSystem.Instance.mainGrid.buildHP.Add(_hospitalData.HP);
-            inGameSelectedSystem.SetHealth(_hospitalData.HP);
-        }
-        else
-            inGameSelectedSystem.SetHealth(GridSystem.Instance.mainGrid.buildHP[GridSystem.Instance.mainGrid.builds.Count - 1]); ;
+        inGameSelectedSystem.startFunc = StartDataPlacement;
+    }
 
+    public void StartDataPlacement()
+    {
+        inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel());
     }
 
     public void HPDown(int downCount)
@@ -37,15 +37,15 @@ public class HospitalID : MonoBehaviour
 
     public void RepairHP()
     {
-        inGameSelectedSystem.SetHealth(_hospitalData.HP);
+        inGameSelectedSystem.SetHealth(_buildData.buildMainDatas[(int)_buildType].HPs[0]);
         ParticalManager.Instance.CallBuildRestoredPartical(gameObject);
         SelectSystem.Instance.SelectFree();
     }
 
     private void Update()
     {
-        if (inGameSelectedSystem.GetIsPlacement() && CheckBar((float)inGameSelectedSystem.GetHealth() / (float)_hospitalData.HP))
-            BarUpdate((float)inGameSelectedSystem.GetHealth() / (float)_hospitalData.HP);
+        if (inGameSelectedSystem.GetIsPlacement() && CheckBar((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[0]))
+            BarUpdate((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[0]);
 
         if (!isCrash && inGameSelectedSystem.GetIsPlacement() && inGameSelectedSystem.GetHealth() <= 0) BreakTime();
     }

@@ -18,17 +18,18 @@ public class BuildTouch : MonoBehaviour
             GridSystem gridSystem = GridSystem.Instance;
 
             SelectObjectPlacement(other.gameObject);
-            GridIDPlacement(gridID);
-            SelectFreedom(gridID, gridSystem);
+            PlaceIDValuesInGrid(gridID);
+            CheckEventCompatibility(gridID, gridSystem);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Grid"))
-        {
-            isFree = false;
-            _selectObject = null;
-        }
+            if (ValidateGrid(_selectObject, collision.gameObject))
+            {
+                isFree = false;
+                _selectObject = null;
+            }
     }
 
     public IEnumerator BuildPlacement()
@@ -46,16 +47,22 @@ public class BuildTouch : MonoBehaviour
     {
         _selectObject = other;
     }
-    private void SelectFreedom(GridID gridID, GridSystem gridSystem)
+    private void CheckEventCompatibility(GridID gridID, GridSystem gridSystem)
     {
         if (!gridSystem.mainGrid.horizontalGrids[gridID.VerticalCount].gridBool[gridID.horizontalCount])
             isFree = true;
         else
             isFree = false;
     }
-    private void GridIDPlacement(GridID gridID)
+    private void PlaceIDValuesInGrid(GridID gridID)
     {
         verticalCount = gridID.VerticalCount;
         horizontalCount = gridID.horizontalCount;
+    }
+    private bool ValidateGrid(GameObject mainGrid, GameObject tempGrid)
+    {
+        if (mainGrid == tempGrid) return true;
+        else return false;
+
     }
 }

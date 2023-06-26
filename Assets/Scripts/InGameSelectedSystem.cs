@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class InGameSelectedSystem : MonoBehaviour
 {
+    public UnityAction startFunc;
     public InfoPanel.InfoPanelStat mainBuildStat;
     [SerializeField] GameObject _mainBuild;
     [SerializeField] bool isPlacement;
@@ -24,9 +26,9 @@ public class InGameSelectedSystem : MonoBehaviour
     {
         return _level;
     }
-    public void UpLevel()
+    public void SetLevel(int level)
     {
-        _level++;
+        _level = level;
     }
 
     public void BuildPlacement()
@@ -51,18 +53,18 @@ public class InGameSelectedSystem : MonoBehaviour
         InfoPanel infoPanel = InfoPanel.Instance;
 
         if (SelectSystem.Instance.GetSelectEnumStat() == SelectSystem.SelectEnumStat.Repair)
-            RepairTime();
+            RepairTime(BuildManager.Instance.GetMainBuildTouch().gameObject.GetComponent<RepairmanID>().GetRepairCost());
         else if (infoPanel.BuyInfoPanelStatIsFull())
         {
-            BuildManager.Instance.AddMainBuildTouch(GetComponent<MainBuildTouch>());
+            BuildManager.Instance.SetMainBuildTouch(GetComponent<MainBuildTouch>());
             infoPanel.OnShowInfoPanel(gameObject, mainBuildStat);
         }
     }
-    private void RepairTime()
+    private void RepairTime(int repairCost)
     {
-        if (InfoPanel.Instance.repairCost < GameManager.Instance.money)
+        if (repairCost < GameManager.Instance.money)
         {
-            MoneySystem.Instance.MoneyTextRevork(-InfoPanel.Instance.repairCost);
+            MoneySystem.Instance.MoneyTextRevork(-repairCost);
 
             if (mainBuildStat == InfoPanel.InfoPanelStat.motherbase) _mainBuild.GetComponent<MotherBaseID>().RepairHP();
             else if (mainBuildStat == InfoPanel.InfoPanelStat.repairman) _mainBuild.GetComponent<RepairmanID>().RepairHP();

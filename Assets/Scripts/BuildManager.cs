@@ -9,6 +9,7 @@ public class BuildManager : MonoSingleton<BuildManager>
 
     [SerializeField] int _OPBuildCount;
     [SerializeField] Material _redMaterial, _greenMaterial;
+    [SerializeField] BuildData _buildData;
 
     [Header("Build_System_Field")]
     [Space(10)]
@@ -23,7 +24,7 @@ public class BuildManager : MonoSingleton<BuildManager>
 
 
 
-    public void ClearMainBuildTouch()
+    public void SetMainBuildTouchToNull()
     {
         _mainBuildTouch = null;
     }
@@ -31,13 +32,15 @@ public class BuildManager : MonoSingleton<BuildManager>
     {
         if (_mainBuildTouch.isReady && _mainBuildTouch.CheckGrid())
         {
+            InGameSelectedSystem inGameSelectedSystem = _mainBuildTouch.GetComponent<InGameSelectedSystem>();
+
             SelectSystem.Instance.SelectFree();
-            DataPlacement(true, 1, _mainBuildTouch.GetComponent<InGameSelectedSystem>().mainBuildStat);
+            DataPlacement(true, 1, inGameSelectedSystem, inGameSelectedSystem.mainBuildStat);
             SoundSystem.Instance.CallBuildPlacement();
             ParticalManager.Instance.CallBuildPartical(_mainBuildTouch.gameObject);
             StartCoroutine(_mainBuildTouch.mainBuildTouch.BuildPlacement());
             MarketPanel.Instance.ItemSelected(InfoPanel.Instance.GetBuyInfoPanelStat());
-            _mainBuildTouch.GetComponent<InGameSelectedSystem>().BuildPlacement();
+            inGameSelectedSystem.BuildPlacement();
             _mainBuildTouch.SaveGridID();
             FirstTapMechanic.Instance.FTStart();
             _mainBuildTouch = null;
@@ -50,25 +53,28 @@ public class BuildManager : MonoSingleton<BuildManager>
         for (int i = 0; i < gridSystem.mainGrid.builds.Count; i++)
             if (gridSystem.mainGrid.builds[i] == build)
             {
-                DeleteBuild(gridSystem, i);
+                DeleteBuildFromGridSystem(gridSystem, i);
                 SetFactor(build);
                 GameManager.Instance.GridPlacementWrite(GridSystem.Instance.mainGrid);
                 break;
             }
     }
 
-    public void DataPlacement(bool isNew, int level, InfoPanel.InfoPanelStat ýnfoPanelStat)
+    public void DataPlacement(bool isNew, int level, InGameSelectedSystem inGameSelectedSystem, InfoPanel.InfoPanelStat infoPanelStat)
     {
-        if (ýnfoPanelStat == InfoPanel.InfoPanelStat.motherbase) _mainBuildTouch.gameObject.GetComponent<MotherBaseID>().StartDataPlacement(isNew);
-        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.repairman) _mainBuildTouch.gameObject.GetComponent<RepairmanID>().StartDataPlacement(isNew);
-        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.miner) _mainBuildTouch.gameObject.GetComponent<MinerID>().StartDataPlacement(isNew, level);
-        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.hospital) _mainBuildTouch.gameObject.GetComponent<HospitalID>().StartDataPlacement(isNew);
-        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.central) _mainBuildTouch.gameObject.GetComponent<CentralID>().StartDataPlacement(isNew, level);
-        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.barracks) _mainBuildTouch.gameObject.GetComponent<BarracksID>().StartDataPlacement(isNew, level);
-        else if (ýnfoPanelStat == InfoPanel.InfoPanelStat.archer) _mainBuildTouch.gameObject.GetComponent<ArcherID>().StartDataPlacement(isNew, level);
+        if (isNew)
+        {
+            GridSystem.Instance.mainGrid.buildHP.Add(_buildData.buildMainDatas[(int)infoPanelStat].HPs[0]);
+            inGameSelectedSystem.SetHealth(_buildData.buildMainDatas[(int)infoPanelStat].HPs[0]);
+        }
+        else
+            inGameSelectedSystem.SetHealth(GridSystem.Instance.mainGrid.buildHP[GridSystem.Instance.mainGrid.builds.Count - 1]); ;
+
+        inGameSelectedSystem.SetLevel(level);
+        inGameSelectedSystem.startFunc();
     }
 
-    public void AddMainBuildTouch(MainBuildTouch mainBuildTouch)
+    public void SetMainBuildTouch(MainBuildTouch mainBuildTouch)
     {
         _mainBuildTouch = mainBuildTouch;
     }
@@ -78,13 +84,13 @@ public class BuildManager : MonoSingleton<BuildManager>
         return _mainBuildTouch;
     }
 
-    public GameObject GetBuild(int buildCount)
+    public GameObject GenerateBuild(int buildCount)
     {
         GameObject build = ObjectPool.Instance.GetPooledObjectAdd(buildCount + _OPBuildCount, _buildSpawnPos.transform.position, Vector3.zero, _buildParent.transform);
         _mainBuildTouch = build.GetComponent<MainBuildTouch>();
         return build;
     }
-    public void GetBackObject()
+    public void CancelBuild()
     {
         _mainBuildTouch.gameObject.SetActive(false);
         _mainBuildTouch = null;
@@ -114,7 +120,7 @@ public class BuildManager : MonoSingleton<BuildManager>
         _mousePos.z = 0;
         _mainBuildTouch.transform.position = _mousePos;
     }
-    private void DeleteBuild(GridSystem gridSystem, int i)
+    private void DeleteBuildFromGridSystem(GridSystem gridSystem, int i)
     {
         gridSystem.mainGrid.buildID.RemoveAt(i);
         gridSystem.mainGrid.buildLevel.RemoveAt(i);

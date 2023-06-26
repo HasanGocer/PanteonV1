@@ -9,6 +9,7 @@ public class ArcherID : MonoBehaviour
     [Header("Standart_Field")]
     [Space(10)]
 
+    [SerializeField] BuildData _buildData;
     [SerializeField] ArcherData _archerData;
     [SerializeField] InGameSelectedSystem inGameSelectedSystem;
     [SerializeField] HitTime _hitTime;
@@ -18,20 +19,19 @@ public class ArcherID : MonoBehaviour
     [Space(10)]
 
     [SerializeField] Image _barImage;
+    [SerializeField] InfoPanel.InfoPanelStat _buildType;
     bool isCrash;
 
-    public void StartDataPlacement(bool isNew, int level)
+    private void Awake()
     {
-        if (isNew)
-        {
-            GridSystem.Instance.mainGrid.buildHP.Add(_archerData.HPs[0]);
-            inGameSelectedSystem.SetHealth(_archerData.HPs[0]);
-        }
-        else
-            inGameSelectedSystem.SetHealth(GridSystem.Instance.mainGrid.buildHP[GridSystem.Instance.mainGrid.builds.Count - 1]); ;
+        inGameSelectedSystem.startFunc = StartDataPlacement;
+    }
 
-        _upgrades[level - 1].SetActive(true);
+    public void StartDataPlacement()
+    {
+        _upgrades[inGameSelectedSystem.GetLevel() - 1].SetActive(true);
         _hitTime.SetData(_archerData.countDowns[inGameSelectedSystem.GetLevel() - 1], _archerData.hitSpeeds[inGameSelectedSystem.GetLevel() - 1], _archerData.damages[inGameSelectedSystem.GetLevel() - 1], gameObject);
+        inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel());
     }
 
     public void HPDown(int downCount)
@@ -42,20 +42,20 @@ public class ArcherID : MonoBehaviour
 
     public void RepairHP()
     {
-        inGameSelectedSystem.SetHealth(_archerData.HPs[inGameSelectedSystem.GetLevel() - 1]);
+        inGameSelectedSystem.SetHealth(_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]);
         ParticalManager.Instance.CallBuildRestoredPartical(gameObject);
         SelectSystem.Instance.SelectFree();
     }
 
     public void UpgradeTime(TMP_Text upgradeCostText)
     {
-        if (inGameSelectedSystem.GetLevel() < _archerData.HPs.Count)
-            if (GameManager.Instance.money >= _archerData.Costs[inGameSelectedSystem.GetLevel() - 1])
+        if (inGameSelectedSystem.GetLevel() < _buildData.buildMainDatas[(int)_buildType].HPs.Count)
+            if (GameManager.Instance.money >= _buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1])
             {
                 BuildVisibility(inGameSelectedSystem.GetLevel() - 1, false);
-                MoneySystem.Instance.MoneyTextRevork(-_archerData.Costs[inGameSelectedSystem.GetLevel() - 1]);
+                MoneySystem.Instance.MoneyTextRevork(-_buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1]);
                 InfoPanel.Instance.OffShowInfoPanel();
-                inGameSelectedSystem.UpLevel();
+                inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel() + 1);
                 UpdateLevel();
                 CostTextPlacement(upgradeCostText);
                 SetHP();
@@ -68,13 +68,13 @@ public class ArcherID : MonoBehaviour
         if (inGameSelectedSystem.GetLevel() == 3)
             upgradeCostText.text = "Full";
         else
-            upgradeCostText.text = _archerData.Costs[inGameSelectedSystem.GetLevel() - 1].ToString();
+            upgradeCostText.text = _buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1].ToString();
     }
 
     public void Update()
     {
-        if (inGameSelectedSystem.GetIsPlacement() && CheckBar((float)inGameSelectedSystem.GetHealth() / (float)_archerData.HPs[inGameSelectedSystem.GetLevel() - 1]))
-            BarUpdate((float)inGameSelectedSystem.GetHealth() / (float)_archerData.HPs[inGameSelectedSystem.GetLevel() - 1]);
+        if (inGameSelectedSystem.GetIsPlacement() && CheckBar((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]))
+            BarUpdate((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]);
 
         if (!isCrash && inGameSelectedSystem.GetIsPlacement() && inGameSelectedSystem.GetHealth() <= 0) BreakTime();
     }
@@ -115,7 +115,7 @@ public class ArcherID : MonoBehaviour
     }
     private void SetHP()
     {
-        inGameSelectedSystem.SetHealth(_archerData.HPs[inGameSelectedSystem.GetLevel() - 1]);
+        inGameSelectedSystem.SetHealth(_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]);
     }
     private void BuildVisibility(int level, bool isOpen)
     {

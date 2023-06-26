@@ -134,7 +134,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
             itemData.SetField(itemDataCount);
             MotherBaseTextPlacement();
             MotherBaseBuyVisibility();
-            BuildManager.Instance.GetBuild((int)InfoPanel.InfoPanelStat.motherbase);
+            BuildManager.Instance.GenerateBuild((int)InfoPanel.InfoPanelStat.motherbase);
         }
 
     }
@@ -152,7 +152,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
             itemData.SetBackField(itemDataCount);
             MotherBaseTextPlacement();
             MoneySystem.Instance.MoneyTextRevork((int)itemData.fieldPrice.fields[itemDataCount]);
-            BuildManager.Instance.GetBackObject();
+            BuildManager.Instance.CancelBuild();
         }
 
         if (!isNewPanel)
@@ -178,7 +178,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
             itemData.SetField(itemDataCount);
             BarracksTextPlacement();
             BarracksBuyVisibility();
-            BuildManager.Instance.GetBuild((int)InfoPanel.InfoPanelStat.barracks);
+            BuildManager.Instance.GenerateBuild((int)InfoPanel.InfoPanelStat.barracks);
         }
     }
     private void BarracksCancelFunc(bool isNewPanel, bool isSelected)
@@ -195,7 +195,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
             itemData.SetBackField(itemDataCount);
             BarracksTextPlacement();
             MoneySystem.Instance.MoneyTextRevork((int)itemData.fieldPrice.fields[itemDataCount]);
-            BuildManager.Instance.GetBackObject();
+            BuildManager.Instance.CancelBuild();
         }
 
         if (!isNewPanel)
@@ -221,7 +221,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
             itemData.SetField(itemDataCount);
             CentralTextPlacement();
             CentralBuyVisibility();
-            BuildManager.Instance.GetBuild((int)InfoPanel.InfoPanelStat.central);
+            BuildManager.Instance.GenerateBuild((int)InfoPanel.InfoPanelStat.central);
         }
     }
     private void CentralCancelFunc(bool isNewPanel, bool isSelected)
@@ -238,7 +238,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
             itemData.SetBackField(itemDataCount);
             CentralTextPlacement();
             MoneySystem.Instance.MoneyTextRevork((int)itemData.fieldPrice.fields[itemDataCount]);
-            BuildManager.Instance.GetBackObject();
+            BuildManager.Instance.CancelBuild();
         }
 
         if (!isNewPanel)
@@ -264,7 +264,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
             itemData.SetField(itemDataCount);
             MinerTextPlacement();
             MinerBuyVisibility();
-            BuildManager.Instance.GetBuild((int)InfoPanel.InfoPanelStat.miner);
+            BuildManager.Instance.GenerateBuild((int)InfoPanel.InfoPanelStat.miner);
         }
     }
     private void MinerCancelFunc(bool isNewPanel, bool isSelected)
@@ -281,7 +281,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
             itemData.SetBackField(itemDataCount);
             MinerTextPlacement();
             MoneySystem.Instance.MoneyTextRevork((int)itemData.fieldPrice.fields[itemDataCount]);
-            BuildManager.Instance.GetBackObject();
+            BuildManager.Instance.CancelBuild();
         }
 
         if (!isNewPanel)
@@ -307,7 +307,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
             itemData.SetField(itemDataCount);
             RepairmanTextPlacement();
             RepairmanBuyVisibility();
-            BuildManager.Instance.GetBuild((int)InfoPanel.InfoPanelStat.repairman);
+            BuildManager.Instance.GenerateBuild((int)InfoPanel.InfoPanelStat.repairman);
         }
     }
     private void RepairmanCancelFunc(bool isNewPanel, bool isSelected)
@@ -324,7 +324,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
             itemData.SetBackField(itemDataCount);
             RepairmanTextPlacement();
             MoneySystem.Instance.MoneyTextRevork((int)itemData.fieldPrice.fields[itemDataCount]);
-            BuildManager.Instance.GetBackObject();
+            BuildManager.Instance.CancelBuild();
         }
 
         if (!isNewPanel)
@@ -350,7 +350,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
             itemData.SetField(itemDataCount);
             HospitalTextPlacement();
             HospitalBuyVisibility();
-            BuildManager.Instance.GetBuild((int)InfoPanel.InfoPanelStat.hospital);
+            BuildManager.Instance.GenerateBuild((int)InfoPanel.InfoPanelStat.hospital);
         }
     }
     private void HospitalCancelFunc(bool isNewPanel, bool isSelected)
@@ -367,7 +367,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
             itemData.SetBackField(itemDataCount);
             HospitalTextPlacement();
             MoneySystem.Instance.MoneyTextRevork((int)itemData.fieldPrice.fields[itemDataCount]);
-            BuildManager.Instance.GetBackObject();
+            BuildManager.Instance.CancelBuild();
         }
 
         if (!isNewPanel)
@@ -393,7 +393,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
             itemData.SetField(itemDataCount);
             ArcherTextPlacement();
             ArcherBuyVisibility();
-            BuildManager.Instance.GetBuild((int)InfoPanel.InfoPanelStat.archer);
+            BuildManager.Instance.GenerateBuild((int)InfoPanel.InfoPanelStat.archer);
         }
     }
     private void ArcherCancelFunc(bool isNewPanel, bool isSelected)
@@ -410,7 +410,7 @@ public class MarketPanel : MonoSingleton<MarketPanel>
             itemData.SetBackField(itemDataCount);
             ArcherTextPlacement();
             MoneySystem.Instance.MoneyTextRevork((int)itemData.fieldPrice.fields[itemDataCount]);
-            BuildManager.Instance.GetBackObject();
+            BuildManager.Instance.CancelBuild();
         }
 
         if (!isNewPanel)
