@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FirstTapMechanic : MonoSingleton<FirstTapMechanic>
 {
-    [SerializeField] GameObject hintPanel;
+    [SerializeField] GameObject _hintPanel;
     public bool isMotherBase;
 
     public void FTStart()
@@ -30,10 +30,10 @@ public class FirstTapMechanic : MonoSingleton<FirstTapMechanic>
     private void PanelOn()
     {
         Load.Instance.isReturn = true;
-        hintPanel.SetActive(true);
+        _hintPanel.SetActive(true);
     }
     private void PanelOff()
     {
-        hintPanel.SetActive(false);
+        _hintPanel.SetActive(false);
     }
 }

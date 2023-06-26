@@ -31,7 +31,7 @@ public class SoldierID : MonoBehaviour
         LevelPlacement(level);
         SoldierVisibility(level);
         HPPlacement(level);
-        GridSystem.Instance.SoldierAdded(level);
+        GridSystem.Instance.saveSoldierRecord(level);
     }
 
     public void SetSoldierAnim(SoldierMoveSystem.SoldierAnimType soldierAnimType)

@@ -78,7 +78,7 @@ public class GameManager : MonoSingleton<GameManager>
         string jsonData = JsonUtility.ToJson(factor);
         System.IO.File.WriteAllText(Application.persistentDataPath + "/FactorData.json", jsonData);
     }
-    public void GridPlacementWrite(GridSystem.VerticalGrid grid)
+    public void GridPlacementWrite(GridSystem.MainGrid grid)
     {
         string jsonData = JsonUtility.ToJson(grid);
         System.IO.File.WriteAllText(Application.persistentDataPath + "/GridData.json", jsonData);
@@ -90,11 +90,11 @@ public class GameManager : MonoSingleton<GameManager>
         factor = JsonUtility.FromJson<ItemData.Field>(jsonRead);
         return factor;
     }
-    public GridSystem.VerticalGrid GridPlacementRead()
+    public GridSystem.MainGrid GridPlacementRead()
     {
         string jsonRead = System.IO.File.ReadAllText(Application.persistentDataPath + "/GridData.json");
-        GridSystem.VerticalGrid grid = new GridSystem.VerticalGrid();
-        grid = JsonUtility.FromJson<GridSystem.VerticalGrid>(jsonRead);
+        GridSystem.MainGrid grid = new GridSystem.MainGrid();
+        grid = JsonUtility.FromJson<GridSystem.MainGrid>(jsonRead);
         return grid;
     }
 

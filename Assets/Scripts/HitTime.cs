@@ -37,7 +37,7 @@ public class HitTime : MonoBehaviour
 
                 if (_timer >= _countDown)
                 {
-                    GameObject focusRival = Search();
+                    GameObject focusRival = FindNearestOpponent();
                     GameObject hit = HitSystem.Instance.GetHit(_startPos.transform.position);
                     hit.transform.LookAt(focusRival.transform);
                     MoveMechanics.Instance.MoveStabile(hit, focusRival, (int)_hitSpeed, ref _isStart, () => Shot(focusRival, hit));
@@ -46,7 +46,7 @@ public class HitTime : MonoBehaviour
             }
     }
 
-    private GameObject Search()
+    private GameObject FindNearestOpponent()
     {
         GameObject tempRival = RivalSpawnSystem.Instance.rivals[0];
 

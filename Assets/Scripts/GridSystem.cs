@@ -17,7 +17,7 @@ public class GridSystem : MonoSingleton<GridSystem>
         public int buildIntHorizontal;
     }
     [System.Serializable]
-    public class VerticalGrid
+    public class MainGrid
     {
         public List<HorizontalGrid> horizontalGrids = new List<HorizontalGrid>();
         public List<BuildID> buildID = new List<BuildID>();
@@ -29,7 +29,7 @@ public class GridSystem : MonoSingleton<GridSystem>
         public bool isFinish;
     }
 
-    public VerticalGrid mainGrid = new VerticalGrid();
+    public MainGrid mainGrid = new MainGrid();
 
     [SerializeField] GameObject _gridParentGameObject;
 
@@ -38,7 +38,8 @@ public class GridSystem : MonoSingleton<GridSystem>
     [SerializeField] SpriteRenderer _templateRenderer;
     [SerializeField] GameObject _gridSpawnPos;
 
-    public void NewGameGridPlacement()
+    #region Grid Placement
+    public void CreateNewGameGrid()
     {
         for (int i1 = 0; i1 < _verticalGridCount; i1++)
         {
@@ -50,12 +51,12 @@ public class GridSystem : MonoSingleton<GridSystem>
 
                 GridParentPlacement(spawnRenderer.gameObject);
                 NewGridHorizontalPlacement(i1, spawnRenderer.gameObject);
-                GridIDPlacement(spawnRenderer.gameObject, i1, i2);
+                PlaceIDValuesInGrid(spawnRenderer.gameObject, i1, i2);
                 BaseColorPlacement(spawnRenderer, BoolOffsetPlacement(i2, i1));
             }
         }
     }
-    public void ResumeGameGridPlacement()
+    public void LoadSavedGameGrid()
     {
         GameObject build;
 
@@ -69,7 +70,7 @@ public class GridSystem : MonoSingleton<GridSystem>
 
                 GridParentPlacement(spawnRenderer.gameObject);
                 ResumeGridHorizontalPlacement(i1, spawnRenderer.gameObject);
-                GridIDPlacement(spawnRenderer.gameObject, i1, i2);
+                PlaceIDValuesInGrid(spawnRenderer.gameObject, i1, i2);
                 BaseColorPlacement(spawnRenderer, BoolOffsetPlacement(i2, i1));
             }
         }
@@ -91,34 +92,34 @@ public class GridSystem : MonoSingleton<GridSystem>
                 soldier.GetComponent<SoldierID>().StatPlacement(i1 + 1);
             }
     }
+    #endregion
 
-    public void SoldierAdded(int level)
+    #region  Save Soldier
+    public void saveSoldierRecord(int level)
     {
         mainGrid.soldierCount[level - 1]++;
 
         GameManager.Instance.GridPlacementWrite(mainGrid);
     }
+    #endregion
 
-    public int GetHorizontalGridCount()
+    #region Get Values
+    public int GetGridHorizontalCount()
     {
         return _horizontalGridCount;
     }
-    public int GetVerticalGridCount()
+    public int GetGridVerticalCount()
     {
         return _verticalGridCount;
     }
+
     public Vector2 GetSpawnPos()
     {
         return _gridSpawnPos.transform.position;
     }
+    #endregion
 
-    private void GridIDPlacement(GameObject grid, int verticalCount, int horizontalCount)
-    {
-        GridID gridID = grid.GetComponent<GridID>();
-
-        gridID.VerticalCount = verticalCount;
-        gridID.horizontalCount = horizontalCount;
-    }
+    #region Grid Placement Funcs
     private void NewGridPlacement()
     {
         HorizontalGrid tempHorizontal = new HorizontalGrid();
@@ -129,6 +130,7 @@ public class GridSystem : MonoSingleton<GridSystem>
         mainGrid.horizontalGrids[verticalCount].gridGameObject.Add(horizontalObject);
         mainGrid.horizontalGrids[verticalCount].gridBool.Add(false);
     }
+    
     private void ResumeGridPlacement(int verticalCount)
     {
         mainGrid.horizontalGrids[verticalCount].gridGameObject.Clear();
@@ -156,10 +158,22 @@ public class GridSystem : MonoSingleton<GridSystem>
     {
         grid.transform.SetParent(_gridParentGameObject.transform);
     }
+    private void PlaceIDValuesInGrid(GameObject grid, int verticalCount, int horizontalCount)
+    {
+        GridID gridID = grid.GetComponent<GridID>();
+
+        gridID.VerticalCount = verticalCount;
+        gridID.horizontalCount = horizontalCount;
+    }
+    private void BaseColorPlacement(SpriteRenderer renderer, bool isOffset)
+    {
+        renderer.color = isOffset ? _offsetColor : _baseColor;
+    }
     private bool BoolOffsetPlacement(int x, int y)
     {
         return (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
     }
+
     private void GridBuildClear()
     {
         mainGrid.builds.Clear();
@@ -168,8 +182,5 @@ public class GridSystem : MonoSingleton<GridSystem>
     {
         mainGrid.builds.Add(build);
     }
-    private void BaseColorPlacement(SpriteRenderer renderer, bool isOffset)
-    {
-        renderer.color = isOffset ? _offsetColor : _baseColor;
-    }
+    #endregion
 }

@@ -27,7 +27,7 @@ public class StartButtons : MonoBehaviour
     {
         if (PlayerPrefs.HasKey("first"))
         {
-            GridSystem.VerticalGrid tempGrid = GridPlacementRead();
+            GridSystem.MainGrid tempGrid = GridPlacementRead();
 
             if (!tempGrid.isFinish)
             {
@@ -48,11 +48,11 @@ public class StartButtons : MonoBehaviour
     {
         Application.Quit();
     }
-    private GridSystem.VerticalGrid GridPlacementRead()
+    private GridSystem.MainGrid GridPlacementRead()
     {
         string jsonRead = System.IO.File.ReadAllText(Application.persistentDataPath + "/GridData.json");
-        GridSystem.VerticalGrid grid = new GridSystem.VerticalGrid();
-        grid = JsonUtility.FromJson<GridSystem.VerticalGrid>(jsonRead);
+        GridSystem.MainGrid grid = new GridSystem.MainGrid();
+        grid = JsonUtility.FromJson<GridSystem.MainGrid>(jsonRead);
         return grid;
     }
 }

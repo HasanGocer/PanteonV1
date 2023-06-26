@@ -63,23 +63,23 @@ public class InfoPanel : MonoSingleton<InfoPanel>
 
         _backButton.onClick.AddListener(BackButton);
     }
-
     public void TextPlacement()
     {
         _barracksAddSoliderText.text = soldierCost.ToString();
         _repairText.text = _repairCost.ToString();
     }
+
     public InfoPanelStat GetBuyInfoPanelStat()
     {
         return _buyInfoPanelStat;
     }
-    public bool BuyInfoPanelStatIsFull()
+    public bool IsBuyInfoPanelStatEmpty()
     {
         if (_buyInfoPanelStat == InfoPanelStat.free) return true;
         else return false;
     }
 
-    public InfoPanelStat OnBuyInfoPanel(InfoPanelStat tempPanelStat)
+    public InfoPanelStat OpenBuyInfoPanel(InfoPanelStat tempPanelStat)
     {
         if (_buyInfoPanelStat == InfoPanelStat.free)
         {
@@ -97,7 +97,7 @@ public class InfoPanel : MonoSingleton<InfoPanel>
             return tempInfoStat;
         }
     }
-    public void OffBuyInfoPanel()
+    public void CloseBuyInfoPanel()
     {
         SetPanel(_buyInfoPanelStat, false, false);
         _buyInfoPanelStat = InfoPanelStat.free;
@@ -108,13 +108,13 @@ public class InfoPanel : MonoSingleton<InfoPanel>
         return _ShowInfoPanelStat;
     }
 
-    public InfoPanelStat OnShowInfoPanel(GameObject build, InfoPanelStat tempPanelStat)
+    public InfoPanelStat OpenShowInfoPanel(GameObject build, InfoPanelStat tempPanelStat)
     {
         if (_ShowInfoPanelStat == InfoPanelStat.free)
         {
             _ShowInfoPanelStat = tempPanelStat;
             SetPanel(tempPanelStat, true, true);
-            BackButtonSelect(true);
+            ToggleBackButtonVisibility(true);
             ButtonTextPlecement(build, tempPanelStat);
             return InfoPanelStat.free;
         }
@@ -130,14 +130,14 @@ public class InfoPanel : MonoSingleton<InfoPanel>
         }
     }
 
-    public void OffShowInfoPanel()
+    public void CloseShowInfoPanel()
     {
         SetPanel(_ShowInfoPanelStat, false, false);
-        BackButtonSelect(false);
+        ToggleBackButtonVisibility(false);
         _ShowInfoPanelStat = InfoPanelStat.free;
     }
 
-    private void BackButtonSelect(bool isOpen)
+    private void ToggleBackButtonVisibility(bool isOpen)
     {
         _backButton.gameObject.SetActive(isOpen);
     }
@@ -145,7 +145,7 @@ public class InfoPanel : MonoSingleton<InfoPanel>
     private void SetPanel(InfoPanelStat tempPanelStat, bool isActive, bool isShowPanel)
     {
         _infoPanels[(int)tempPanelStat].SetActive(isActive);
-        BackButtonSelect(isShowPanel);
+        ToggleBackButtonVisibility(isShowPanel);
         _infoButtonPanels[(int)tempPanelStat].SetActive(isShowPanel);
     }
     private void ButtonTextPlecement(GameObject build, InfoPanelStat tempPanelStat)
@@ -161,7 +161,7 @@ public class InfoPanel : MonoSingleton<InfoPanel>
     }
     private void BackButton()
     {
-        OffShowInfoPanel();
+        CloseShowInfoPanel();
     }
 
     private void BarracksUpgradeButton()

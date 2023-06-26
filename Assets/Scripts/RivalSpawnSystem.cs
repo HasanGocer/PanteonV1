@@ -44,19 +44,19 @@ public class RivalSpawnSystem : MonoSingleton<RivalSpawnSystem>
 
         if (tempRandom == 0)
         {
-            rivalPos += new Vector2(Random.Range(0, gridSystem.GetHorizontalGridCount()), gridSystem.GetVerticalGridCount());
+            rivalPos += new Vector2(Random.Range(0, gridSystem.GetGridHorizontalCount()), gridSystem.GetGridVerticalCount());
         }
         else if (tempRandom == 1)
         {
-            rivalPos += new Vector2(Random.Range(0, gridSystem.GetHorizontalGridCount()), 0);
+            rivalPos += new Vector2(Random.Range(0, gridSystem.GetGridHorizontalCount()), 0);
         }
         else if (tempRandom == 2)
         {
-            rivalPos += new Vector2(0, Random.Range(0, gridSystem.GetVerticalGridCount()));
+            rivalPos += new Vector2(0, Random.Range(0, gridSystem.GetGridVerticalCount()));
         }
         else
         {
-            rivalPos += new Vector2(gridSystem.GetHorizontalGridCount(), Random.Range(0, gridSystem.GetVerticalGridCount()));
+            rivalPos += new Vector2(gridSystem.GetGridHorizontalCount(), Random.Range(0, gridSystem.GetGridVerticalCount()));
         }
 
         return rivalPos;

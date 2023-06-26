@@ -49,9 +49,9 @@ public class ItemData : MonoSingleton<ItemData>
         InfoPanel.Instance.TextPlacement();
 
         if (Load.Instance.isReturn)
-            GridSystem.Instance.ResumeGameGridPlacement();
+            GridSystem.Instance.LoadSavedGameGrid();
         else
-            GridSystem.Instance.NewGameGridPlacement();
+            GridSystem.Instance.CreateNewGameGrid();
 
         FirstTapMechanic.Instance.FTStart();
     }
