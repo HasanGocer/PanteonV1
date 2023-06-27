@@ -22,19 +22,21 @@ public class SoldierMoveSystem : MonoSingleton<SoldierMoveSystem>
     Vector3 _target;
 
 
-    public void NewBuildPlacement()
+    public void RebuildNavMesh()
     {
         _surface2D.BuildNavMeshAsync();
     }
-    public void SetSoldier(GameObject soldier)
+    public void SetInitialNavMeshSettingsForSoldier(GameObject soldier)
     {
-        AgentPlacement(soldier);
+        NavMeshAgent navMeshAgent = soldier.GetComponent<NavMeshAgent>();
+        navMeshAgent.updateRotation = false;
+        navMeshAgent.updateUpAxis = false;
     }
-    public void SoldierFree()
+    public void CancelSoldierFocus()
     {
         _mainSoldier = null;
     }
-    public void AgentSelect(GameObject soldier)
+    public void SetSoldierFocus(GameObject soldier)
     {
         _mainSoldier = soldier;
         _navMeshAgent = soldier.GetComponent<NavMeshAgent>();
@@ -66,30 +68,24 @@ public class SoldierMoveSystem : MonoSingleton<SoldierMoveSystem>
                     }
                     else
                     {
-                        TargetPlacement();
-                        SetAgentPosition();
+                        SelectSoldierDestination();
+                        SetSoldierDestination();
                         _navMeshAgent.gameObject.GetComponent<SoldierID>().SetSoldierAnim(SoldierAnimType.run);
                     }
                 }
                 else
                 {
-                    TargetPlacement();
-                    SetAgentPosition();
+                    SelectSoldierDestination();
+                    SetSoldierDestination();
                     _navMeshAgent.gameObject.GetComponent<SoldierID>().SetSoldierAnim(SoldierAnimType.run);
                 }
             }
     }
-    private void AgentPlacement(GameObject soldier)
-    {
-        NavMeshAgent navMeshAgent = soldier.GetComponent<NavMeshAgent>();
-        navMeshAgent.updateRotation = false;
-        navMeshAgent.updateUpAxis = false;
-    }
-    private void SetAgentPosition()
+    private void SetSoldierDestination()
     {
         _navMeshAgent.SetDestination(_target);
     }
-    private void TargetPlacement()
+    private void SelectSoldierDestination()
     {
         _target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         _target.z = 0;

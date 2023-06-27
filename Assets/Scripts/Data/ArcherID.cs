@@ -34,12 +34,6 @@ public class ArcherID : MonoBehaviour
         inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel());
     }
 
-    public void HPDown(int downCount)
-    {
-        inGameSelectedSystem.SetHealth(inGameSelectedSystem.GetHealth() - downCount);
-        SaveHP();
-    }
-
     public void UpgradeTime(TMP_Text upgradeCostText)
     {
         if (inGameSelectedSystem.GetLevel() < _buildData.buildMainDatas[(int)_buildType].HPs.Count)
@@ -113,15 +107,5 @@ public class ArcherID : MonoBehaviour
     private void BuildVisibility(int level, bool isOpen)
     {
         _upgrades[level].SetActive(isOpen);
-    }
-    private void SaveHP()
-    {
-        GridSystem gridSystem = GridSystem.Instance;
-
-        for (int i = 0; i < gridSystem.mainGrid.builds.Count; i++)
-            if (gridSystem.mainGrid.builds[i] == gameObject)
-            {
-                gridSystem.mainGrid.buildHP[i] = inGameSelectedSystem.GetHealth();
-            }
     }
 }

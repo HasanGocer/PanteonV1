@@ -36,12 +36,6 @@ public class BarracksID : MonoBehaviour
         inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel());
     }
 
-    public void HPDown(int downCount)
-    {
-        inGameSelectedSystem.SetHealth(inGameSelectedSystem.GetHealth() - downCount);
-        SaveHP();
-    }
-
     public void CostTextPlacement(TMP_Text upgradeCostText)
     {
         if (inGameSelectedSystem.GetLevel() == 3)
@@ -61,7 +55,7 @@ public class BarracksID : MonoBehaviour
                 inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel() + 1);
                 UpdateLevel();
                 CostTextPlacement(upgradeCostText);
-                _hitTime.SetData(_barracksData.countDowns[inGameSelectedSystem.GetLevel() - 1], _barracksData.hitSpeeds[inGameSelectedSystem.GetLevel() - 1], _barracksData.damages[inGameSelectedSystem.GetLevel() - 1], gameObject);
+              //-----  _hitTime.SetData(_barracksData.countDowns[inGameSelectedSystem.GetLevel() - 1], _barracksData.hitSpeeds[inGameSelectedSystem.GetLevel() - 1], _barracksData.damages[inGameSelectedSystem.GetLevel() - 1], gameObject);
                 SetHP();
                 BuildVisibility(inGameSelectedSystem.GetLevel() - 1, true);
             }
@@ -123,15 +117,5 @@ public class BarracksID : MonoBehaviour
     private void BuildVisibility(int level, bool isOpen)
     {
         _upgrades[level].SetActive(isOpen);
-    }
-    private void SaveHP()
-    {
-        GridSystem gridSystem = GridSystem.Instance;
-
-        for (int i = 0; i < gridSystem.mainGrid.builds.Count; i++)
-            if (gridSystem.mainGrid.builds[i] == gameObject)
-            {
-                gridSystem.mainGrid.buildHP[i] = inGameSelectedSystem.GetHealth();
-            }
     }
 }

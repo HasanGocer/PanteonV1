@@ -39,7 +39,7 @@ public class RivalSpawnSystem : MonoSingleton<RivalSpawnSystem>
         GameObject rival = ObjectPool.Instance.GetPooledObjectAdd(_OPRivalCount, SpawnRivalsInWave(), Vector3.zero, _rivalParent.transform);
 
         rivals.Add(rival);
-        SoldierMoveSystem.Instance.SetSoldier(rival);
+        SoldierMoveSystem.Instance.SetInitialNavMeshSettingsForSoldier(rival);
         rival.GetComponent<RivalID>().RivalIDStart(rivalLevelCount);
     }
     private Vector2 SpawnRivalsInWave()

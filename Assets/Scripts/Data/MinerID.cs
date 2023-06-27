@@ -34,12 +34,6 @@ public class MinerID : MonoBehaviour
         inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel());
     }
 
-    public void HPDown(int downCount)
-    {
-        inGameSelectedSystem.SetHealth(inGameSelectedSystem.GetHealth() - downCount);
-        SaveHP();
-    }
-
     public void UpgradeTime(TMP_Text perCountText, TMP_Text upgradeCostText)
     {
         if (inGameSelectedSystem.GetLevel() - 1 < _buildData.buildMainDatas[(int)_buildType].HPs.Count)
@@ -120,15 +114,5 @@ public class MinerID : MonoBehaviour
     private void BuildVisibility(int level, bool isOpen)
     {
         _upgrades[level].SetActive(isOpen);
-    }
-    private void SaveHP()
-    {
-        GridSystem gridSystem = GridSystem.Instance;
-
-        for (int i = 0; i < gridSystem.mainGrid.builds.Count; i++)
-            if (gridSystem.mainGrid.builds[i] == gameObject)
-            {
-                gridSystem.mainGrid.buildHP[i] = inGameSelectedSystem.GetHealth();
-            }
     }
 }

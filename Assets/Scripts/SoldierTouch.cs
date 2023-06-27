@@ -7,11 +7,11 @@ public class SoldierTouch : MonoBehaviour
     private void OnMouseDown()
     {
         SelectSystem.Instance.SelectSoldierMove();
-        SoldierMoveSystem.Instance.AgentSelect(gameObject);
+        SoldierMoveSystem.Instance.SetSoldierFocus(gameObject);
     }
 
     private void OnEnable()
     {
-        SoldierMoveSystem.Instance.SetSoldier(gameObject);
+        SoldierMoveSystem.Instance.SetInitialNavMeshSettingsForSoldier(gameObject);
     }
 }

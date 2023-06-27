@@ -22,7 +22,7 @@ public class SelectSystem : MonoSingleton<SelectSystem>
     public void EventFinish()
     {
         if (_selectEnumStat == SelectEnumStat.soldierMove)
-            SoldierMoveSystem.Instance.SoldierFree();
+            SoldierMoveSystem.Instance.CancelSoldierFocus();
         else if (_selectEnumStat == SelectEnumStat.BuildPlacement)
             MarketPanel.Instance.NewItemSelected(InfoPanel.Instance.GetBuyInfoPanelStat());
         else if (_selectEnumStat == SelectEnumStat.Repair)

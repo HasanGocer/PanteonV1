@@ -34,12 +34,6 @@ public class RepairmanID : MonoBehaviour
         return _repairmanData.repairCost;
     }
 
-    public void HPDown(int downCount)
-    {
-        inGameSelectedSystem.SetHealth(inGameSelectedSystem.GetHealth() - downCount);
-        SaveHP();
-    }
-
     public void Update()
     {
         if (inGameSelectedSystem.GetIsPlacement() && CheckBar((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[0]))
@@ -69,15 +63,5 @@ public class RepairmanID : MonoBehaviour
     private void BarUpdate(float rateHP)
     {
         _barImage.fillAmount = Mathf.Lerp(_barImage.fillAmount, rateHP, Time.deltaTime);
-    }
-    private void SaveHP()
-    {
-        GridSystem gridSystem = GridSystem.Instance;
-
-        for (int i = 0; i < gridSystem.mainGrid.builds.Count; i++)
-            if (gridSystem.mainGrid.builds[i] == gameObject)
-            {
-                gridSystem.mainGrid.buildHP[i] = inGameSelectedSystem.GetHealth();
-            }
     }
 }

@@ -37,7 +37,7 @@ public class BuildTouch : MonoBehaviour
         GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
         transform.DOMove(_selectObject.transform.position, BuildManager.Instance.buildMoveTime);
         yield return new WaitForSeconds(0.2f);
-        SoldierMoveSystem.Instance.NewBuildPlacement();
+        SoldierMoveSystem.Instance.RebuildNavMesh();
     }
     public void OverrideSelectObject(GameObject selectObject)
     {
