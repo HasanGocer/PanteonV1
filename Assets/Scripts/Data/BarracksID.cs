@@ -27,6 +27,7 @@ public class BarracksID : MonoBehaviour
     private void Awake()
     {
         inGameSelectedSystem.startFunc = StartDataPlacement;
+        inGameSelectedSystem.upgradeFunc = UpgradeTime;
     }
 
     public void StartDataPlacement()
@@ -34,31 +35,6 @@ public class BarracksID : MonoBehaviour
         _upgrades[inGameSelectedSystem.GetLevel() - 1].SetActive(true);
         _hitTime.SetData(_barracksData.countDowns[inGameSelectedSystem.GetLevel() - 1], _barracksData.hitSpeeds[inGameSelectedSystem.GetLevel() - 1], _barracksData.damages[inGameSelectedSystem.GetLevel() - 1], gameObject);
         inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel());
-    }
-
-    public void CostTextPlacement(TMP_Text upgradeCostText)
-    {
-        if (inGameSelectedSystem.GetLevel() == 3)
-            upgradeCostText.text = "Full";
-        else
-            upgradeCostText.text = _buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1].ToString();
-    }
-
-    public void UpgradeTime(TMP_Text upgradeCostText)
-    {
-        if (inGameSelectedSystem.GetLevel() < _buildData.buildMainDatas[(int)_buildType].HPs.Count)
-            if (GameManager.Instance.money >= _buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1])
-            {
-                BuildVisibility(inGameSelectedSystem.GetLevel() - 1, false);
-                MoneySystem.Instance.MoneyTextRevork(-_buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1]);
-                InfoPanel.Instance.CloseShowInfoPanel();
-                inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel() + 1);
-                UpdateLevel();
-                CostTextPlacement(upgradeCostText);
-              //-----  _hitTime.SetData(_barracksData.countDowns[inGameSelectedSystem.GetLevel() - 1], _barracksData.hitSpeeds[inGameSelectedSystem.GetLevel() - 1], _barracksData.damages[inGameSelectedSystem.GetLevel() - 1], gameObject);
-                SetHP();
-                BuildVisibility(inGameSelectedSystem.GetLevel() - 1, true);
-            }
     }
 
     public void AddSolider()
@@ -73,6 +49,15 @@ public class BarracksID : MonoBehaviour
             BarUpdate((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]);
 
         if (!isCrash && inGameSelectedSystem.GetIsPlacement() && inGameSelectedSystem.GetHealth() <= 0) BreakTime();
+    }
+
+    private void UpgradeTime()
+    {
+        BuildVisibility(inGameSelectedSystem.GetLevel() - 1, false);
+        UpdateLevel();
+        _hitTime.SetData(_barracksData.countDowns[inGameSelectedSystem.GetLevel() - 1], _barracksData.hitSpeeds[inGameSelectedSystem.GetLevel() - 1], _barracksData.damages[inGameSelectedSystem.GetLevel() - 1], gameObject);
+        SetHP();
+        BuildVisibility(inGameSelectedSystem.GetLevel() - 1, true);
     }
     private void BreakTime()
     {

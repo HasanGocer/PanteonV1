@@ -25,6 +25,7 @@ public class MinerID : MonoBehaviour
     private void Awake()
     {
         inGameSelectedSystem.startFunc = StartDataPlacement;
+        inGameSelectedSystem.upgradeFunc = UpgradeTime;
     }
 
     public void StartDataPlacement()
@@ -34,33 +35,14 @@ public class MinerID : MonoBehaviour
         inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel());
     }
 
-    public void UpgradeTime(TMP_Text perCountText, TMP_Text upgradeCostText)
-    {
-        if (inGameSelectedSystem.GetLevel() - 1 < _buildData.buildMainDatas[(int)_buildType].HPs.Count)
-            if (GameManager.Instance.money >= _buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1])
-            {
-                BuildVisibility(inGameSelectedSystem.GetLevel(), false);
-                MoneySystem.Instance.MoneyTextRevork(-_buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1]);
-                InfoPanel.Instance.CloseShowInfoPanel();
-                inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel() + 1);
-                UpdateLevel();
-                CostTextPlacement(perCountText, upgradeCostText);
-                SetHP();
-                BuildVisibility(inGameSelectedSystem.GetLevel(), true);
-            }
-    }
-    public void CostTextPlacement(TMP_Text perCountText, TMP_Text upgradeCostText)
-    {
-        perCountText.text = "Saniye baþý " + _minerData.PerGem[inGameSelectedSystem.GetLevel() - 1];
-
-        if (inGameSelectedSystem.GetLevel() == 3)
-            upgradeCostText.text = "Full";
-        else
-            upgradeCostText.text = _buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1].ToString();
-    }
     public void MinerTime()
     {
         MoneySystem.Instance.MoneyTextRevork(_minerData.PerGem[inGameSelectedSystem.GetLevel() - 1]);
+    }
+
+    public float GetPerGem()
+    {
+        return _minerData.PerGem[inGameSelectedSystem.GetLevel() - 1];
     }
 
     public void Update()
@@ -69,6 +51,15 @@ public class MinerID : MonoBehaviour
             BarUpdate((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]);
 
         if (!isCrash && inGameSelectedSystem.GetIsPlacement() && inGameSelectedSystem.GetHealth() <= 0) BreakTime();
+    }
+
+    private void UpgradeTime()
+    {
+        BuildVisibility(inGameSelectedSystem.GetLevel(), false);
+        UpdateLevel();
+        InfoPanel.Instance.SetCentralPerText(GetPerGem());
+        SetHP();
+        BuildVisibility(inGameSelectedSystem.GetLevel(), true);
     }
     private void BreakTime()
     {

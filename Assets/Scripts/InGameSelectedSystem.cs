@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using TMPro;
 
 public class InGameSelectedSystem : MonoBehaviour
 {
     public UnityAction startFunc;
+    public UnityAction upgradeFunc;
     public InfoPanel.InfoPanelStat mainBuildStat;
     [SerializeField] GameObject _mainBuild;
     [SerializeField] bool isPlacement;
@@ -40,12 +42,34 @@ public class InGameSelectedSystem : MonoBehaviour
         return isPlacement;
     }
 
+    public void UpgradeTime(TMP_Text upgradeCostText, InfoPanel.InfoPanelStat buildType)
+    {
+        BuildData buildData = BuildManager.Instance.GetBuildData();
+
+        if (_level < buildData.buildMainDatas[(int)buildType].HPs.Count)
+            if (GameManager.Instance.money >= buildData.buildMainDatas[(int)buildType].Costs[_level - 1])
+            {
+                MoneySystem.Instance.MoneyTextRevork(-buildData.buildMainDatas[(int)buildType].Costs[_level - 1]);
+                InfoPanel.Instance.CloseShowInfoPanel();
+                SetLevel(_level + 1);
+                CostTextPlacement(upgradeCostText, buildType);
+                upgradeFunc();
+            }
+    }
+    public void CostTextPlacement(TMP_Text upgradeCostText, InfoPanel.InfoPanelStat buildType)
+    {
+        BuildData buildData = BuildManager.Instance.GetBuildData();
+
+        if (_level == 3)
+            upgradeCostText.text = "Full";
+        else
+            upgradeCostText.text = buildData.buildMainDatas[(int)buildType].Costs[_level - 1].ToString();
+    }
+
     private void OnMouseDown()
     {
         if (isPlacement)
-        {
             MainButton();
-        }
     }
 
     private void MainButton()
@@ -57,7 +81,7 @@ public class InGameSelectedSystem : MonoBehaviour
         else if (infoPanel.IsBuyInfoPanelStatEmpty())
         {
             BuildManager.Instance.SetMainBuildTouch(GetComponent<MainBuildTouch>());
-            infoPanel.OpenShowInfoPanel(gameObject, mainBuildStat);
+            infoPanel.OpenShowInfoPanel(mainBuildStat);
         }
     }
     private void RepairTime(int repairCost)

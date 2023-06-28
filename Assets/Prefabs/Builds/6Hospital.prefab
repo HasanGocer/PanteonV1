@@ -502,9 +502,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46a091c96a9a03a41bd4de583823d2a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buildData: {fileID: 11400000, guid: 9ec6d4b6d3ddd2044b0102fd7c20c9a4, type: 2}
   _hospitalData: {fileID: 11400000, guid: 48be2ff9e16728b45b13a09de1a69ff0, type: 2}
   inGameSelectedSystem: {fileID: 2441876240589469754}
   _barImage: {fileID: 4012167924490714602}
+  _buildType: 5
 --- !u!114 &2441876240589469754
 MonoBehaviour:
   m_ObjectHideFlags: 0

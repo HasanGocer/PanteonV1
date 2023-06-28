@@ -22,6 +22,7 @@ public class MotherBaseID : MonoBehaviour
     private void Awake()
     {
         inGameSelectedSystem.startFunc = StartDataPlacement;
+        inGameSelectedSystem.upgradeFunc = UpgradeTime;
     }
 
     public void StartDataPlacement()
@@ -36,6 +37,10 @@ public class MotherBaseID : MonoBehaviour
             BarUpdate((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[0]);
 
         if (!isCrash && inGameSelectedSystem.GetIsPlacement() && inGameSelectedSystem.GetHealth() <= 0) BreakTime();
+    }
+
+    private void UpgradeTime()
+    {
     }
     private void BreakTime()
     {

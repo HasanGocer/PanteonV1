@@ -544,6 +544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09917a6fc1733ac4f93afa999ec94d5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buildData: {fileID: 11400000, guid: 9ec6d4b6d3ddd2044b0102fd7c20c9a4, type: 2}
   _minerData: {fileID: 11400000, guid: 2aec9b69f7c74be47af9f9c29315c20f, type: 2}
   _minerTime: {fileID: 1956520222404879346}
   inGameSelectedSystem: {fileID: 7018227570183148029}
@@ -552,6 +553,7 @@ MonoBehaviour:
   - {fileID: 2848698114262557005}
   - {fileID: 2848698116117730227}
   _barImage: {fileID: 1550776112620331404}
+  _buildType: 3
 --- !u!114 &7018227570183148029
 MonoBehaviour:
   m_ObjectHideFlags: 0

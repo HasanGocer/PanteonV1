@@ -476,9 +476,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b177781254077fd4eae042049524c7b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buildData: {fileID: 11400000, guid: 9ec6d4b6d3ddd2044b0102fd7c20c9a4, type: 2}
   _motherBaseData: {fileID: 11400000, guid: e18b7ab55e9cf204f9bd07383a831289, type: 2}
   inGameSelectedSystem: {fileID: 3958514283568240234}
   _barImage: {fileID: 3493809920503447073}
+  _buildType: 0
 --- !u!114 &3958514283568240234
 MonoBehaviour:
   m_ObjectHideFlags: 0

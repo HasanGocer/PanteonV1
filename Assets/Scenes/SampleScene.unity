@@ -19659,34 +19659,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 852cb8a91831ab644b2d4469b889e63a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _motherBaseBuyButton: {fileID: 2713278008497569496}
-  _motherBaseCancelButton: {fileID: 2713278010068636402}
-  _barracksBuyButton: {fileID: 2713278007994705279}
-  _barracksCancelButton: {fileID: 2713278009893913574}
-  _centralBuyButton: {fileID: 2713278008205741497}
-  _centralCancelButton: {fileID: 2713278008805786035}
-  _minerBuyButton: {fileID: 2713278009490516302}
-  _minerCancelButton: {fileID: 2713278008721254687}
-  _repairmanBuyButton: {fileID: 2713278008437119696}
-  _repairmanCancelButton: {fileID: 2713278009876486601}
-  _hospitalBuyButton: {fileID: 2713278009124275354}
-  _hospitalCancelButton: {fileID: 2713278009465756005}
-  _archerBuyButton: {fileID: 2713278007982993058}
-  _archerCancelButton: {fileID: 2713278009010445737}
-  _motherBaseCostText: {fileID: 2713278009514651512}
-  _barracksCostText: {fileID: 2713278009020240367}
-  _centralCostText: {fileID: 2713278009758021609}
-  _minerCostText: {fileID: 2713278008458487071}
-  _repairmanCostText: {fileID: 2713278008353921303}
-  _hospitalCostText: {fileID: 2713278009687932116}
-  _archerCostText: {fileID: 2713278008880639958}
-  _motherBaseLimitText: {fileID: 2713278009020048994}
-  _barracksLimitText: {fileID: 2713278007998064454}
-  _centralLimitText: {fileID: 2713278009376158973}
-  _minerLimitText: {fileID: 2713278008704991983}
-  _repairmanLimitText: {fileID: 2713278008474064846}
-  _hospitalLimitText: {fileID: 2713278008381983782}
-  _archerLimitText: {fileID: 2713278009900251304}
+  _buyButtons:
+  - {fileID: 2713278008497569496}
+  - {fileID: 2713278007994705279}
+  - {fileID: 2713278008205741497}
+  - {fileID: 2713278009490516302}
+  - {fileID: 2713278008437119696}
+  - {fileID: 2713278009124275354}
+  - {fileID: 2713278007982993058}
+  _cancelButtons:
+  - {fileID: 2713278010068636402}
+  - {fileID: 2713278009893913574}
+  - {fileID: 2713278008805786035}
+  - {fileID: 2713278008721254687}
+  - {fileID: 2713278009876486601}
+  - {fileID: 2713278009465756005}
+  - {fileID: 2713278009010445737}
+  _costTexts:
+  - {fileID: 2713278009514651512}
+  - {fileID: 2713278009020240367}
+  - {fileID: 2713278009758021609}
+  - {fileID: 2713278008458487071}
+  - {fileID: 2713278008353921303}
+  - {fileID: 2713278009687932116}
+  - {fileID: 2713278008880639958}
+  _limitTexts:
+  - {fileID: 2713278009020048994}
+  - {fileID: 2713278007998064454}
+  - {fileID: 2713278009376158973}
+  - {fileID: 2713278008704991983}
+  - {fileID: 2713278008474064846}
+  - {fileID: 2713278008381983782}
+  - {fileID: 2713278009900251304}
   _itemDataBuildCount: 0
 --- !u!4 &3463060651932263122
 Transform:
@@ -19749,20 +19753,28 @@ MonoBehaviour:
   - {fileID: 2713278009467899176}
   - {fileID: 2713278008841958050}
   _backButton: {fileID: 2713278009480028020}
-  _barracksUpgradeButton: {fileID: 2713278008688283488}
+  _upgradeButtons:
+  - {fileID: 0}
+  - {fileID: 2713278008688283488}
+  - {fileID: 2713278008883895323}
+  - {fileID: 2713278007956707246}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 2713278009339826667}
   _barracksAddSoliderButton: {fileID: 2713278008220125443}
-  _centralUpgradeButton: {fileID: 2713278008883895323}
-  _minerUpgradeButton: {fileID: 2713278007956707246}
   _repairButton: {fileID: 2713278009731417987}
-  _archerUpgradeButton: {fileID: 2713278009339826667}
-  _barracksUpgradeText: {fileID: 2713278009957125794}
-  _barracksAddSoliderText: {fileID: 2713278009728705406}
-  _centralUpgradeText: {fileID: 2713278009031067255}
+  _upgradeTexts:
+  - {fileID: 0}
+  - {fileID: 2713278009957125794}
+  - {fileID: 2713278009031067255}
+  - {fileID: 2713278009212229448}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 2713278008779400501}
   _centralPerText: {fileID: 1237841522}
-  _minerUpgradeText: {fileID: 2713278009212229448}
   _minerPerText: {fileID: 1924768674}
   _repairText: {fileID: 2713278008859978483}
-  _archerUpgradeText: {fileID: 2713278008779400501}
+  _barracksAddSoliderText: {fileID: 2713278009728705406}
   _repairCost: 50
   soldierCost: 50
 --- !u!4 &3463060652433046643
@@ -19889,7 +19901,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae6e9964c22410459a1e9eb30ec0e12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hintPanel: {fileID: 621949134}
+  _hintPanel: {fileID: 621949134}
   isMotherBase: 0
 --- !u!114 &3463060652804758697
 MonoBehaviour:
@@ -20317,7 +20329,7 @@ MonoBehaviour:
   _OPBuildCount: 0
   _redMaterial: {fileID: 2100000, guid: 7960345346fae5349ae554783b500d9f, type: 2}
   _greenMaterial: {fileID: 2100000, guid: a3ecf10b1f567e94ca7cc6acae99c2c1, type: 2}
-  _buildData: {fileID: 0}
+  _buildData: {fileID: 11400000, guid: 9ec6d4b6d3ddd2044b0102fd7c20c9a4, type: 2}
   _buildParent: {fileID: 2052451580}
   _buildSpawnPos: {fileID: 2052451580}
   buildMoveTime: 0.2
@@ -20405,7 +20417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bar: {fileID: 2101350724}
-  _gapTime: 20
+  _buildMovementDuration: 0.01
 --- !u!114 &3463060653579789435
 MonoBehaviour:
   m_ObjectHideFlags: 0

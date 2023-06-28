@@ -740,9 +740,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d50f234bb4bdac74e93a50bc79f7b9b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buildData: {fileID: 11400000, guid: 9ec6d4b6d3ddd2044b0102fd7c20c9a4, type: 2}
   _repairmanData: {fileID: 11400000, guid: 931846d551b7afc45936200f7b428a9e, type: 2}
   inGameSelectedSystem: {fileID: 6987573130519102812}
   _barImage: {fileID: 5030702723411410016}
+  _buildType: 4
 --- !u!114 &6987573130519102812
 MonoBehaviour:
   m_ObjectHideFlags: 0

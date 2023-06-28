@@ -25,6 +25,7 @@ public class ArcherID : MonoBehaviour
     private void Awake()
     {
         inGameSelectedSystem.startFunc = StartDataPlacement;
+        inGameSelectedSystem.upgradeFunc = UpgradeTime;
     }
 
     public void StartDataPlacement()
@@ -34,36 +35,19 @@ public class ArcherID : MonoBehaviour
         inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel());
     }
 
-    public void UpgradeTime(TMP_Text upgradeCostText)
-    {
-        if (inGameSelectedSystem.GetLevel() < _buildData.buildMainDatas[(int)_buildType].HPs.Count)
-            if (GameManager.Instance.money >= _buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1])
-            {
-                BuildVisibility(inGameSelectedSystem.GetLevel() - 1, false);
-                MoneySystem.Instance.MoneyTextRevork(-_buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1]);
-                InfoPanel.Instance.CloseShowInfoPanel();
-                inGameSelectedSystem.SetLevel(inGameSelectedSystem.GetLevel() + 1);
-                UpdateLevel();
-                CostTextPlacement(upgradeCostText);
-                SetHP();
-                BuildVisibility(inGameSelectedSystem.GetLevel() - 1, true);
-            }
-    }
-
-    public void CostTextPlacement(TMP_Text upgradeCostText)
-    {
-        if (inGameSelectedSystem.GetLevel() == 3)
-            upgradeCostText.text = "Full";
-        else
-            upgradeCostText.text = _buildData.buildMainDatas[(int)_buildType].Costs[inGameSelectedSystem.GetLevel() - 1].ToString();
-    }
-
     public void Update()
     {
         if (inGameSelectedSystem.GetIsPlacement() && CheckBar((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]))
             BarUpdate((float)inGameSelectedSystem.GetHealth() / (float)_buildData.buildMainDatas[(int)_buildType].HPs[inGameSelectedSystem.GetLevel() - 1]);
 
         if (!isCrash && inGameSelectedSystem.GetIsPlacement() && inGameSelectedSystem.GetHealth() <= 0) BreakTime();
+    }
+    private void UpgradeTime()
+    {
+        BuildVisibility(inGameSelectedSystem.GetLevel() - 1, false);
+        UpdateLevel();
+        SetHP();
+        BuildVisibility(inGameSelectedSystem.GetLevel(), true);
     }
     private void BreakTime()
     {

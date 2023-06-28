@@ -29,34 +29,30 @@ public class InfoPanel : MonoSingleton<InfoPanel>
     [Header("Buy_And_Upgrade_Buttons")]
     [Space(10)]
 
-    [SerializeField] Button _barracksUpgradeButton;
+    [SerializeField] List<Button> _upgradeButtons = new List<Button>();
+
     [SerializeField] Button _barracksAddSoliderButton;
-    [SerializeField] Button _centralUpgradeButton;
-    [SerializeField] Button _minerUpgradeButton;
     [SerializeField] Button _repairButton;
-    [SerializeField] Button _archerUpgradeButton;
 
     [Header("Buy_And_Upgrade_Buttons")]
     [Space(10)]
 
-    [SerializeField] TMP_Text _barracksUpgradeText;
-    [SerializeField] TMP_Text _barracksAddSoliderText;
-    [SerializeField] TMP_Text _centralUpgradeText;
+    [SerializeField] List<TMP_Text> _upgradeTexts = new List<TMP_Text>();
+
     [SerializeField] TMP_Text _centralPerText;
-    [SerializeField] TMP_Text _minerUpgradeText;
     [SerializeField] TMP_Text _minerPerText;
     [SerializeField] TMP_Text _repairText;
-    [SerializeField] TMP_Text _archerUpgradeText;
+    [SerializeField] TMP_Text _barracksAddSoliderText;
 
     [SerializeField] int _repairCost;
     public int soldierCost;
 
     public void ButtonPlacement()
     {
-        _barracksUpgradeButton.onClick.AddListener(BarracksUpgradeButton);
-        _centralUpgradeButton.onClick.AddListener(CentralUpgradeButton);
-        _minerUpgradeButton.onClick.AddListener(MinerUpgradeButton);
-        _archerUpgradeButton.onClick.AddListener(ArcherUpgradeButton);
+        _upgradeButtons[(int)InfoPanel.InfoPanelStat.barracks].onClick.AddListener(() => BuildUpgradeButton(InfoPanel.InfoPanelStat.barracks));
+        _upgradeButtons[(int)InfoPanel.InfoPanelStat.central].onClick.AddListener(() => BuildUpgradeButton(InfoPanel.InfoPanelStat.central));
+        _upgradeButtons[(int)InfoPanel.InfoPanelStat.miner].onClick.AddListener(() => BuildUpgradeButton(InfoPanel.InfoPanelStat.miner));
+        _upgradeButtons[(int)InfoPanel.InfoPanelStat.archer].onClick.AddListener(() => BuildUpgradeButton(InfoPanel.InfoPanelStat.archer));
 
         _repairButton.onClick.AddListener(RepairTime);
         _barracksAddSoliderButton.onClick.AddListener(AddSolider);
@@ -108,14 +104,14 @@ public class InfoPanel : MonoSingleton<InfoPanel>
         return _ShowInfoPanelStat;
     }
 
-    public InfoPanelStat OpenShowInfoPanel(GameObject build, InfoPanelStat tempPanelStat)
+    public InfoPanelStat OpenShowInfoPanel(InfoPanelStat tempPanelStat)
     {
         if (_ShowInfoPanelStat == InfoPanelStat.free)
         {
             _ShowInfoPanelStat = tempPanelStat;
             SetPanel(tempPanelStat, true, true);
             ToggleBackButtonVisibility(true);
-            ButtonTextPlecement(build, tempPanelStat);
+            ButtonTextPlacement(tempPanelStat);
             return InfoPanelStat.free;
         }
         else
@@ -125,9 +121,17 @@ public class InfoPanel : MonoSingleton<InfoPanel>
             SetPanel(_ShowInfoPanelStat, false, false);
             _ShowInfoPanelStat = tempPanelStat;
             SetPanel(tempPanelStat, true, true);
-            ButtonTextPlecement(build, tempPanelStat);
+            ButtonTextPlacement(tempPanelStat);
             return tempInfoStat;
         }
+    }
+    public void SetMinerPerText(float perGem)
+    {
+        _minerPerText.text = "Saniye baþý " + perGem;
+    }
+    public void SetCentralPerText(float energyGem)
+    {
+        _minerPerText.text = "Saniye baþý " + energyGem;
     }
 
     public void CloseShowInfoPanel()
@@ -148,54 +152,28 @@ public class InfoPanel : MonoSingleton<InfoPanel>
         ToggleBackButtonVisibility(isShowPanel);
         _infoButtonPanels[(int)tempPanelStat].SetActive(isShowPanel);
     }
-    private void ButtonTextPlecement(GameObject build, InfoPanelStat tempPanelStat)
+    private void ButtonTextPlacement(InfoPanelStat buildStat)
     {
-        if (tempPanelStat == InfoPanelStat.barracks)
-            build.GetComponent<BarracksID>().CostTextPlacement(_barracksUpgradeText);
-        else if (tempPanelStat == InfoPanelStat.archer)
-            build.GetComponent<ArcherID>().CostTextPlacement(_archerUpgradeText);
-        else if (tempPanelStat == InfoPanelStat.miner)
-            build.GetComponent<MinerID>().CostTextPlacement(_minerPerText, _minerUpgradeText);
-        else if (tempPanelStat == InfoPanelStat.central)
-            build.GetComponent<CentralID>().CostTextPlacement(_centralPerText, _centralUpgradeText);
+        GameObject build = BuildManager.Instance.GetMainBuildTouch().gameObject;
+
+        _upgradeTexts[(int)buildStat].text = BuildManager.Instance.GetBuildData().buildMainDatas[(int)buildStat].Costs[build.GetComponent<InGameSelectedSystem>().GetLevel() - 1].ToString();
+        if (buildStat == InfoPanelStat.miner) SetCentralPerText(build.GetComponent<MinerID>().GetPerGem());
+        else if (buildStat == InfoPanelStat.central) SetCentralPerText(build.GetComponent<CentralID>().GetPerEnergy());
     }
     private void BackButton()
     {
         CloseShowInfoPanel();
     }
 
-    private void BarracksUpgradeButton()
+    private void BuildUpgradeButton(InfoPanelStat buildStat)
     {
         MainBuildTouch tempMainBuildTouch = BuildManager.Instance.GetMainBuildTouch();
         GameObject mainBuild = tempMainBuildTouch.gameObject;
-        BarracksID barracksID = mainBuild.GetComponent<BarracksID>();
+        InGameSelectedSystem inGameSelectedSystem = GetComponent<InGameSelectedSystem>();
 
-        barracksID.UpgradeTime(_barracksUpgradeText);
+        inGameSelectedSystem.UpgradeTime(_upgradeTexts[(int)buildStat], buildStat);
     }
-    private void CentralUpgradeButton()
-    {
-        MainBuildTouch tempMainBuildTouch = BuildManager.Instance.GetMainBuildTouch();
-        GameObject mainBuild = tempMainBuildTouch.gameObject;
-        CentralID centralID = mainBuild.GetComponent<CentralID>();
 
-        centralID.UpgradeTime(_centralPerText, _centralUpgradeText);
-    }
-    private void MinerUpgradeButton()
-    {
-        MainBuildTouch tempMainBuildTouch = BuildManager.Instance.GetMainBuildTouch();
-        GameObject mainBuild = tempMainBuildTouch.gameObject;
-        MinerID minerID = mainBuild.GetComponent<MinerID>();
-
-        minerID.UpgradeTime(_minerPerText, _minerUpgradeText);
-    }
-    private void ArcherUpgradeButton()
-    {
-        MainBuildTouch tempMainBuildTouch = BuildManager.Instance.GetMainBuildTouch();
-        GameObject mainBuild = tempMainBuildTouch.gameObject;
-        ArcherID archerID = mainBuild.GetComponent<ArcherID>();
-
-        archerID.UpgradeTime(_archerUpgradeText);
-    }
     private void AddSolider()
     {
         if (GameManager.Instance.power >= soldierCost)

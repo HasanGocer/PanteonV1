@@ -230,6 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66549506421532c45af7c7115a4c6bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buildData: {fileID: 11400000, guid: 9ec6d4b6d3ddd2044b0102fd7c20c9a4, type: 2}
   _barracksData: {fileID: 11400000, guid: c19b82f1b4aeba54db2fa19da55763c7, type: 2}
   inGameSelectedSystem: {fileID: 6160151211929834542}
   _hitTime: {fileID: 7545027981575304811}
@@ -239,6 +240,7 @@ MonoBehaviour:
   - {fileID: 397565500599470998}
   _barImage: {fileID: 397565499978027107}
   _soliderStartPos: {fileID: 397565499175642283}
+  _buildType: 1
 --- !u!114 &6160151211929834542
 MonoBehaviour:
   m_ObjectHideFlags: 0
