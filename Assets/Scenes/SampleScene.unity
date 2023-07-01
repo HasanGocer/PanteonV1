@@ -9354,7 +9354,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &2713278008637634548
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14246,7 +14246,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2713278009211102679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14636,7 +14636,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &2713278009290293956
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -16511,7 +16511,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2713278009497693848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17955,7 +17955,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2713278009862839496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18744,7 +18744,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2713278009946353833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19225,7 +19225,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2713278010045745748
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19866,6 +19866,7 @@ GameObject:
   - component: {fileID: 3463060652804758696}
   - component: {fileID: 3463060652804758697}
   - component: {fileID: 3463060652804758698}
+  - component: {fileID: 3463060652804758699}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -19936,6 +19937,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _OPPlusCount: 12
   _plusLifeTime: 1
+--- !u!114 &3463060652804758699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3463060652804758694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 731d5cf8ea28c3b47b70a249d421556a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPrefabs:
+  - {fileID: 2713278009496327639}
+  - {fileID: 2713278009290293952}
+  - {fileID: 2713278010025287485}
+  - {fileID: 2713278009946353829}
+  - {fileID: 2713278009211102675}
+  - {fileID: 2713278008637634544}
+  - {fileID: 2713278009862839492}
+  content: {fileID: 2713278008157496087}
 --- !u!114 &3463060652985630162
 MonoBehaviour:
   m_ObjectHideFlags: 0

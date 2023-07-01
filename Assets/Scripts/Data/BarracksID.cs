@@ -53,7 +53,7 @@ public class BarracksID : MonoBehaviour
 
     private void UpgradeTime()
     {
-        BuildVisibility(inGameSelectedSystem.GetLevel() - 1, false);
+        BuildVisibility(inGameSelectedSystem.GetLevel() - 2, false);
         UpdateLevel();
         _hitTime.SetData(_barracksData.countDowns[inGameSelectedSystem.GetLevel() - 1], _barracksData.hitSpeeds[inGameSelectedSystem.GetLevel() - 1], _barracksData.damages[inGameSelectedSystem.GetLevel() - 1], gameObject);
         SetHP();

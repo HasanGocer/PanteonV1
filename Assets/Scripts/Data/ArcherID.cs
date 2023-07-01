@@ -44,10 +44,10 @@ public class ArcherID : MonoBehaviour
     }
     private void UpgradeTime()
     {
-        BuildVisibility(inGameSelectedSystem.GetLevel() - 1, false);
+        BuildVisibility(inGameSelectedSystem.GetLevel() -2, false);
         UpdateLevel();
         SetHP();
-        BuildVisibility(inGameSelectedSystem.GetLevel(), true);
+        BuildVisibility(inGameSelectedSystem.GetLevel() - 1, true);
     }
     private void BreakTime()
     {

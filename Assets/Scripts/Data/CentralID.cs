@@ -55,11 +55,11 @@ public class CentralID : MonoBehaviour
 
     private void UpgradeTime()
     {
-        BuildVisibility(inGameSelectedSystem.GetLevel(), false);
+        BuildVisibility(inGameSelectedSystem.GetLevel() - 2, false);
         UpdateLevel();
         InfoPanel.Instance.SetCentralPerText(GetPerEnergy());
         SetHP();
-        BuildVisibility(inGameSelectedSystem.GetLevel(), true);
+        BuildVisibility(inGameSelectedSystem.GetLevel() - 1, true);
     }
     private void BreakTime()
     {

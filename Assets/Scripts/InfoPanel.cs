@@ -155,8 +155,12 @@ public class InfoPanel : MonoSingleton<InfoPanel>
     private void ButtonTextPlacement(InfoPanelStat buildStat)
     {
         GameObject build = BuildManager.Instance.GetMainBuildTouch().gameObject;
+        InGameSelectedSystem inGameSelectedSystem = build.GetComponent<InGameSelectedSystem>();
 
-        _upgradeTexts[(int)buildStat].text = BuildManager.Instance.GetBuildData().buildMainDatas[(int)buildStat].Costs[build.GetComponent<InGameSelectedSystem>().GetLevel() - 1].ToString();
+        if (inGameSelectedSystem.GetLevel() == 3)
+            _upgradeTexts[(int)buildStat].text = "Full";
+        else
+            _upgradeTexts[(int)buildStat].text = BuildManager.Instance.GetBuildData().buildMainDatas[(int)buildStat].Costs[inGameSelectedSystem.GetLevel() - 1].ToString();
         if (buildStat == InfoPanelStat.miner) SetCentralPerText(build.GetComponent<MinerID>().GetPerGem());
         else if (buildStat == InfoPanelStat.central) SetCentralPerText(build.GetComponent<CentralID>().GetPerEnergy());
     }
@@ -169,7 +173,7 @@ public class InfoPanel : MonoSingleton<InfoPanel>
     {
         MainBuildTouch tempMainBuildTouch = BuildManager.Instance.GetMainBuildTouch();
         GameObject mainBuild = tempMainBuildTouch.gameObject;
-        InGameSelectedSystem inGameSelectedSystem = GetComponent<InGameSelectedSystem>();
+        InGameSelectedSystem inGameSelectedSystem = mainBuild.GetComponent<InGameSelectedSystem>();
 
         inGameSelectedSystem.UpgradeTime(_upgradeTexts[(int)buildStat], buildStat);
     }

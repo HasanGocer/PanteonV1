@@ -79,13 +79,13 @@ public class MarketPanel : MonoSingleton<MarketPanel>
                 InfoPanel.InfoPanelStat tempInfoStat = infoPanel.OpenBuyInfoPanel(buildStat);
 
                 if (tempInfoStat != InfoPanel.InfoPanelStat.free)
-                    NewItemSelected(tempInfoStat);
+                    NewItemSelected(buildStat);
 
                 SelectSystem.Instance.SelectBuildPlacement();
                 MoneySystem.Instance.MoneyTextRevork(-(int)itemData.fieldPrice.fields[itemDataCount]);
                 itemData.SetField(itemDataCount);
-                BuildTextPlacement(tempInfoStat);
-                BuildBuyVisibility(tempInfoStat, true);
+                BuildTextPlacement(buildStat);
+                BuildBuyVisibility(buildStat, true);
                 BuildManager.Instance.GenerateBuild((int)buildStat);
             }
     }

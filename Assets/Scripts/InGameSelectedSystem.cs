@@ -46,7 +46,7 @@ public class InGameSelectedSystem : MonoBehaviour
     {
         BuildData buildData = BuildManager.Instance.GetBuildData();
 
-        if (_level < buildData.buildMainDatas[(int)buildType].HPs.Count)
+        if (_level - 1 < buildData.buildMainDatas[(int)buildType].HPs.Count)
             if (GameManager.Instance.money >= buildData.buildMainDatas[(int)buildType].Costs[_level - 1])
             {
                 MoneySystem.Instance.MoneyTextRevork(-buildData.buildMainDatas[(int)buildType].Costs[_level - 1]);
@@ -59,6 +59,8 @@ public class InGameSelectedSystem : MonoBehaviour
     public void CostTextPlacement(TMP_Text upgradeCostText, InfoPanel.InfoPanelStat buildType)
     {
         BuildData buildData = BuildManager.Instance.GetBuildData();
+
+        print(_level);
 
         if (_level == 3)
             upgradeCostText.text = "Full";

@@ -9,6 +9,17 @@ public class BuildTouch : MonoBehaviour
     public int verticalCount, horizontalCount;
     [SerializeField] GameObject _selectObject;
 
+    public IEnumerator BuildPlacement()
+    {
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        transform.DOMove(_selectObject.transform.position, BuildManager.Instance.buildMoveTime);
+        yield return new WaitForSeconds(0.2f);
+        SoldierMoveSystem.Instance.RebuildNavMesh();
+    }
+    public void OverrideSelectObject(GameObject selectObject)
+    {
+        _selectObject = selectObject;
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -32,17 +43,6 @@ public class BuildTouch : MonoBehaviour
             }
     }
 
-    public IEnumerator BuildPlacement()
-    {
-        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
-        transform.DOMove(_selectObject.transform.position, BuildManager.Instance.buildMoveTime);
-        yield return new WaitForSeconds(0.2f);
-        SoldierMoveSystem.Instance.RebuildNavMesh();
-    }
-    public void OverrideSelectObject(GameObject selectObject)
-    {
-        _selectObject = selectObject;
-    }
     private void SelectObjectPlacement(GameObject other)
     {
         _selectObject = other;

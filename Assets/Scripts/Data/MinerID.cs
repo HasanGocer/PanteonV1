@@ -55,11 +55,11 @@ public class MinerID : MonoBehaviour
 
     private void UpgradeTime()
     {
-        BuildVisibility(inGameSelectedSystem.GetLevel(), false);
+        BuildVisibility(inGameSelectedSystem.GetLevel() - 2, false);
         UpdateLevel();
         InfoPanel.Instance.SetCentralPerText(GetPerGem());
         SetHP();
-        BuildVisibility(inGameSelectedSystem.GetLevel(), true);
+        BuildVisibility(inGameSelectedSystem.GetLevel() - 1, true);
     }
     private void BreakTime()
     {
