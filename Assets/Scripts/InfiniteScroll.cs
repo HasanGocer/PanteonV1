@@ -1,66 +1,187 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InfiniteScroll : MonoBehaviour
+public class InfiniteScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IScrollHandler
 {
-    public GameObject[] itemPrefabs;
-    public RectTransform content;
+    #region Private Members
 
-    private float itemHeight;
-    private int currentFirstIndex;
+    /// <summary>
+    /// The ScrollContent component that belongs to the scroll content GameObject.
+    /// </summary>
+    [SerializeField]
+    private ScrollContent scrollContent;
+
+    /// <summary>
+    /// How far the items will travel outside of the scroll view before being repositioned.
+    /// </summary>
+    [SerializeField]
+    private float outOfBoundsThreshold;
+
+    /// <summary>
+    /// The ScrollRect component for this GameObject.
+    /// </summary>
+    private ScrollRect scrollRect;
+
+    /// <summary>
+    /// The last position where the user has dragged.
+    /// </summary>
+    private Vector2 lastDragPosition;
+
+    /// <summary>
+    /// Is the user dragging in the positive axis or the negative axis?
+    /// </summary>
+    private bool positiveDrag;
+
+    #endregion
 
     private void Start()
     {
-        itemHeight = itemPrefabs[0].GetComponent<RectTransform>().rect.height;
+        scrollRect = GetComponent<ScrollRect>();
+        scrollRect.vertical = scrollContent.Vertical;
+        scrollRect.movementType = ScrollRect.MovementType.Unrestricted;
+    }
 
-        for (int i = 0; i < itemPrefabs.Length; i++)
+    /// <summary>
+    /// Called when the user starts to drag the scroll view.
+    /// </summary>
+    /// <param name="eventData">The data related to the drag event.</param>
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        lastDragPosition = eventData.position;
+    }
+
+    /// <summary>
+    /// Called while the user is dragging the scroll view.
+    /// </summary>
+    /// <param name="eventData">The data related to the drag event.</param>
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (scrollContent.Vertical)
         {
-            CreateItem(i);
+            positiveDrag = eventData.position.y > lastDragPosition.y;
+        }
+        else if (scrollContent.Horizontal)
+        {
+            positiveDrag = eventData.position.x > lastDragPosition.x;
+        }
+
+        lastDragPosition = eventData.position;
+    }
+
+    /// <summary>
+    /// Called when the user starts to scroll with their mouse wheel in the scroll view.
+    /// </summary>
+    /// <param name="eventData">The data related to the scroll event.</param>
+    public void OnScroll(PointerEventData eventData)
+    {
+        if (scrollContent.Vertical)
+        {
+            positiveDrag = eventData.scrollDelta.y > 0;
+        }
+        else
+        {
+            // Scrolling up on the mouse wheel is considered a negative scroll, but I defined
+            // scrolling downwards (scrolls right in a horizontal view) as the positive direciton,
+            // so I check if the if scrollDelta.y is less than zero to check for a positive drag.
+            positiveDrag = eventData.scrollDelta.y < 0;
         }
     }
 
-    private void Update()
+    /// <summary>
+    /// Called when the user is dragging/scrolling the scroll view.
+    /// </summary>
+    public void OnViewScroll()
     {
-        if (Mathf.Abs(content.anchoredPosition.y - (currentFirstIndex * itemHeight)) > itemHeight / 2)
+        if (scrollContent.Vertical)
         {
-            UpdateItems();
+            HandleVerticalScroll();
+        }
+        else
+        {
+            HandleHorizontalScroll();
         }
     }
 
-    private void CreateItem(int index)
+    /// <summary>
+    /// Called if the scroll view is oriented vertically.
+    /// </summary>
+    private void HandleVerticalScroll()
     {
-        GameObject newItem = Instantiate(itemPrefabs[index % itemPrefabs.Length], content);
+        int currItemIndex = positiveDrag ? scrollRect.content.childCount - 1 : 0;
+        var currItem = scrollRect.content.GetChild(currItemIndex);
 
-        newItem.SetActive(true);
-        RectTransform rectTransform = newItem.GetComponent<RectTransform>();
-        rectTransform.anchoredPosition = new Vector2(0, -index * itemHeight);
-    }
-
-    private void RemoveItem(int index)
-    {
-        Destroy(content.GetChild(index).gameObject);
-    }
-
-    private void UpdateItems()
-    {
-        int newIndex = Mathf.FloorToInt(content.anchoredPosition.y / itemHeight);
-        int offset = newIndex - currentFirstIndex;
-
-        if (offset > 0)
+        if (!ReachedThreshold(currItem))
         {
-            for (int i = 0; i < offset; i++)
-            {
-                RemoveItem(currentFirstIndex);
-                currentFirstIndex++;
-            }
+            return;
         }
-        else if (offset < 0)
+
+        int endItemIndex = positiveDrag ? 0 : scrollRect.content.childCount - 1;
+        Transform endItem = scrollRect.content.GetChild(endItemIndex);
+        Vector2 newPos = endItem.position;
+
+        if (positiveDrag)
         {
-            for (int i = 0; i > offset; i--)
-            {
-                currentFirstIndex--;
-                CreateItem(currentFirstIndex);
-            }
+            newPos.y = endItem.position.y - scrollContent.ChildHeight * 1.5f + scrollContent.ItemSpacing;
+        }
+        else
+        {
+            newPos.y = endItem.position.y + scrollContent.ChildHeight * 1.5f - scrollContent.ItemSpacing;
+        }
+
+        currItem.position = newPos;
+        currItem.SetSiblingIndex(endItemIndex);
+    }
+
+    /// <summary>
+    /// Called if the scroll view is oriented horizontally.
+    /// </summary>
+    private void HandleHorizontalScroll()
+    {
+        int currItemIndex = positiveDrag ? scrollRect.content.childCount - 1 : 0;
+        var currItem = scrollRect.content.GetChild(currItemIndex);
+        if (!ReachedThreshold(currItem))
+        {
+            return;
+        }
+
+        int endItemIndex = positiveDrag ? 0 : scrollRect.content.childCount - 1;
+        Transform endItem = scrollRect.content.GetChild(endItemIndex);
+        Vector2 newPos = endItem.position;
+
+        if (positiveDrag)
+        {
+            newPos.x = endItem.position.x - scrollContent.ChildWidth * 1.5f + scrollContent.ItemSpacing;
+        }
+        else
+        {
+            newPos.x = endItem.position.x + scrollContent.ChildWidth * 1.5f - scrollContent.ItemSpacing;
+        }
+
+        currItem.position = newPos;
+        currItem.SetSiblingIndex(endItemIndex);
+    }
+
+    /// <summary>
+    /// Checks if an item has the reached the out of bounds threshold for the scroll view.
+    /// </summary>
+    /// <param name="item">The item to be checked.</param>
+    /// <returns>True if the item has reached the threshold for either ends of the scroll view, false otherwise.</returns>
+    private bool ReachedThreshold(Transform item)
+    {
+        if (scrollContent.Vertical)
+        {
+            float posYThreshold = transform.position.y + scrollContent.Height * 0.5f + outOfBoundsThreshold;
+            float negYThreshold = transform.position.y - scrollContent.Height * 0.5f - outOfBoundsThreshold;
+            return positiveDrag ? item.position.y - scrollContent.ChildWidth * 0.5f > posYThreshold :
+                item.position.y + scrollContent.ChildWidth * 0.5f < negYThreshold;
+        }
+        else
+        {
+            float posXThreshold = transform.position.x + scrollContent.Width * 0.5f + outOfBoundsThreshold;
+            float negXThreshold = transform.position.x - scrollContent.Width * 0.5f - outOfBoundsThreshold;
+            return positiveDrag ? item.position.x - scrollContent.ChildWidth * 0.5f > posXThreshold :
+                item.position.x + scrollContent.ChildWidth * 0.5f < negXThreshold;
         }
     }
 }
